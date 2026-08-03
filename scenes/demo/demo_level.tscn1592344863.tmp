@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://c0kmykcnmu6i3"]
+
+[ext_resource type="Script" uid="uid://b4p34rl3g3dij" path="res://scenes/demo/demo_level.gd" id="1_6a7gy"]
+[ext_resource type="Script" uid="uid://rrp11n518b6t" path="res://scripts/world/world_builder.gd" id="2_rletu"]
+[ext_resource type="Script" uid="uid://debqmkidrrehy" path="res://scripts/world/biomes/biome_forest.gd" id="3_okwrk"]
+[ext_resource type="Texture2D" uid="uid://dvpybj3sryi18" path="res://sprites/tilesets/TilesetDebug.png" id="4_fidxf"]
+
+[sub_resource type="Resource" id="Resource_rletu"]
+script = ExtResource("3_okwrk")
+metadata/_custom_type_script = "uid://debqmkidrrehy"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mf6ly"]
+texture = ExtResource("4_fidxf")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_okwrk"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_mf6ly")
+
+[node name="DemoLevel" type="Node2D" unique_id=625991631 node_paths=PackedStringArray("WorldGen", "Tilemap")]
+script = ExtResource("1_6a7gy")
+amount_of_enemies = null
+WorldGen = NodePath("WorldBuilder")
+Tilemap = NodePath("TileMapLayer")
+
+[node name="WorldBuilder" type="Node" parent="." unique_id=485147630]
+script = ExtResource("2_rletu")
+FullRandom = true
+TileSize = Vector2i(32, 32)
+biome = SubResource("Resource_rletu")
+RiverStart = 1
+RiverEnd = 5
+metadata/_custom_type_script = "uid://rrp11n518b6t"
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=416299819]
+tile_set = SubResource("TileSet_okwrk")

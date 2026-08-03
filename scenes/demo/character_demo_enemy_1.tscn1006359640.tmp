@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://bqtenuaexi51f"]
+
+[ext_resource type="Script" uid="uid://drkuwjd3u0fe" path="res://scripts/ai/characters/enemies/demo_enemy1.gd" id="1_cphj0"]
+[ext_resource type="Script" uid="uid://doejhfgthu4ky" path="res://addons/finite_state_machine/finite_state_machine.gd" id="2_lpju0"]
+[ext_resource type="Texture2D" uid="uid://bg5uyk6npe5u0" path="res://sprites/characters/debug.png" id="2_ys4sj"]
+[ext_resource type="Script" uid="uid://7x11qovhy61a" path="res://scripts/ai/characters/enemies/states/idle.gd" id="3_cbe7e"]
+[ext_resource type="Script" uid="uid://wh8ilo01iubk" path="res://scripts/ai/characters/enemies/states/walk.gd" id="5_nxmu5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nxmu5"]
+radius = 16.0
+
+[node name="Character_Demo_Enemy_1" type="CharacterBody2D" unique_id=1075690684]
+script = ExtResource("1_cphj0")
+vision_range = null
+vision_angle_deg = null
+vision_check_interval = null
+lose_target_time = null
+obstacle_mask = null
+attack_range = null
+attack_damage = null
+attack_cooldown = null
+alert_broadcast_radius = null
+metadata/_custom_type_script = "uid://drkuwjd3u0fe"
+
+[node name="MainCollision" type="CollisionShape2D" parent="." unique_id=840563576]
+shape = SubResource("CircleShape2D_nxmu5")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=2083357045]
+texture = ExtResource("2_ys4sj")
+
+[node name="StateMachine" type="Node" parent="." unique_id=1021481988 node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_lpju0")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=1542486207]
+script = ExtResource("3_cbe7e")
+
+[node name="Walk" type="Node" parent="StateMachine" unique_id=841160404]
+script = ExtResource("5_nxmu5")

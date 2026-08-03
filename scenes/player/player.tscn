@@ -1,0 +1,347 @@
+[gd_scene format=3 uid="uid://xdum7b6fyudn"]
+
+[ext_resource type="Script" uid="uid://ctqskgr156tuo" path="res://scripts/player/player.gd" id="1_8afob"]
+[ext_resource type="Texture2D" uid="uid://bg5uyk6npe5u0" path="res://sprites/characters/debug.png" id="2_dovo2"]
+[ext_resource type="Script" uid="uid://bpcwbjdgx6uvg" path="res://scripts/player/player_equipment.gd" id="3_0owmy"]
+[ext_resource type="Script" uid="uid://dcohkf6npl5j6" path="res://scripts/ui/inventory/player_inventory.gd" id="3_lvxji"]
+[ext_resource type="Script" uid="uid://xq4v688klto5" path="res://scripts/ui/inventory/inventory_ui.gd" id="4_p47bc"]
+[ext_resource type="Script" uid="uid://b75o2p1dc7m0o" path="res://scripts/player/player_attack.gd" id="4_qek5x"]
+[ext_resource type="Script" uid="uid://c5hksm4jcmvhx" path="res://scripts/ui/inventory/equipment_doll_ui.gd" id="5_p47bc"]
+[ext_resource type="Script" uid="uid://cboo6er1vm7s" path="res://scripts/player/player_interaction.gd" id="6_5gtgg"]
+[ext_resource type="Script" uid="uid://b54tp5j3ue14" path="res://scripts/ui/inventory/equipment_slot_ui.gd" id="8_qek5x"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lvxji"]
+radius = 16.0
+
+[node name="Player" type="CharacterBody2D" unique_id=2004850523 node_paths=PackedStringArray("equipment", "attack_node") groups=["player"]]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_8afob")
+equipment = NodePath("PlayerEquipment")
+attack_node = NodePath("PlayerAttack")
+metadata/_custom_type_script = "uid://ctqskgr156tuo"
+
+[node name="MainCollision" type="CollisionShape2D" parent="." unique_id=220354387]
+shape = SubResource("CircleShape2D_lvxji")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1347900718]
+texture = ExtResource("2_dovo2")
+
+[node name="PlayerEquipment" type="Node" parent="." unique_id=1248380903]
+script = ExtResource("3_0owmy")
+metadata/_custom_type_script = "uid://bpcwbjdgx6uvg"
+
+[node name="PlayerAttack" type="Node" parent="." unique_id=2114600922]
+script = ExtResource("4_qek5x")
+metadata/_custom_type_script = "uid://b75o2p1dc7m0o"
+
+[node name="PlayerInventory" type="Node" parent="." unique_id=1667263598 node_paths=PackedStringArray("ui", "ui_root", "doll", "doll_root", "equipment")]
+script = ExtResource("3_lvxji")
+grid_size = Vector2i(10, 10)
+ui = NodePath("../CanvasLayer/Control/InvPanel/MarginContainer/InventoryUI")
+ui_root = NodePath("../CanvasLayer/Control/InvPanel")
+doll = NodePath("../CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI")
+doll_root = NodePath("../CanvasLayer/Control/Doll")
+equipment = NodePath("../PlayerEquipment")
+metadata/_custom_type_script = "uid://dcohkf6npl5j6"
+
+[node name="PlayerInteraction" type="Node" parent="." unique_id=1023811596]
+script = ExtResource("6_5gtgg")
+metadata/_custom_type_script = "uid://cboo6er1vm7s"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1793518963]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=665712885]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="InvPanel" type="PanelContainer" parent="CanvasLayer/Control" unique_id=1163668322]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -660.0
+offset_bottom = 660.0
+grow_horizontal = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/InvPanel" unique_id=1008922764]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="InventoryUI" type="MarginContainer" parent="CanvasLayer/Control/InvPanel/MarginContainer" unique_id=296422723]
+custom_minimum_size = Vector2(640, 640)
+layout_mode = 2
+mouse_filter = 0
+script = ExtResource("4_p47bc")
+grid_size = Vector2i(10, 10)
+metadata/_custom_type_script = "uid://xq4v688klto5"
+
+[node name="Doll" type="PanelContainer" parent="CanvasLayer/Control" unique_id=1957174002]
+layout_mode = 1
+offset_right = 374.0
+offset_bottom = 336.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Doll" unique_id=870460914]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="EquipmentDollUI" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer" unique_id=1629715069]
+custom_minimum_size = Vector2(354, 296)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+script = ExtResource("5_p47bc")
+metadata/_custom_type_script = "uid://c5hksm4jcmvhx"
+
+[node name="Slot_HEAD_PRIMARY" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=342281012]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 122.0
+offset_top = 6.0
+offset_right = 122.0
+offset_bottom = 6.0
+tooltip_text = "HEAD_PRIMARY"
+script = ExtResource("8_qek5x")
+
+[node name="Slot_HEAD_SECONDARY" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=28414475]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 180.0
+offset_top = 6.0
+offset_right = 180.0
+offset_bottom = 6.0
+tooltip_text = "HEAD_SECONDARY"
+script = ExtResource("8_qek5x")
+slot_id = 1
+
+[node name="Slot_AMULET" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=1868073741]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+tooltip_text = "AMULET"
+script = ExtResource("8_qek5x")
+slot_id = 15
+
+[node name="Slot_TORSO_PRIMARY" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=1380923135]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 122.0
+offset_top = 64.0
+offset_right = 122.0
+offset_bottom = 64.0
+tooltip_text = "TORSO_PRIMARY"
+script = ExtResource("8_qek5x")
+slot_id = 2
+
+[node name="Slot_TORSO_SECONDARY" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=1214151754]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 180.0
+offset_top = 64.0
+offset_right = 180.0
+offset_bottom = 64.0
+tooltip_text = "TORSO_SECONDARY"
+script = ExtResource("8_qek5x")
+slot_id = 3
+
+[node name="Slot_BACK" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=817367768]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 238.0
+offset_top = 64.0
+offset_right = 238.0
+offset_bottom = 64.0
+tooltip_text = "BACK"
+script = ExtResource("8_qek5x")
+slot_id = 9
+
+[node name="Slot_HAND_1" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=1887491477]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 6.0
+offset_top = 122.0
+offset_right = 6.0
+offset_bottom = 122.0
+tooltip_text = "HAND_1"
+script = ExtResource("8_qek5x")
+slot_id = 13
+
+[node name="Slot_ARMS" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=2106402144]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 64.0
+offset_top = 122.0
+offset_right = 64.0
+offset_bottom = 122.0
+tooltip_text = "ARMS"
+script = ExtResource("8_qek5x")
+slot_id = 4
+
+[node name="Slot_BODY_SLOT_1" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=1628050688]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 122.0
+offset_top = 122.0
+offset_right = 122.0
+offset_bottom = 122.0
+tooltip_text = "BODY_SLOT_1"
+script = ExtResource("8_qek5x")
+slot_id = 10
+
+[node name="Slot_BODY_SLOT_2" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=390558712]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 180.0
+offset_top = 122.0
+offset_right = 180.0
+offset_bottom = 122.0
+tooltip_text = "BODY_SLOT_2"
+script = ExtResource("8_qek5x")
+slot_id = 11
+
+[node name="Slot_GLOVES" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=710653557]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 238.0
+offset_top = 122.0
+offset_right = 238.0
+offset_bottom = 122.0
+tooltip_text = "GLOVES"
+script = ExtResource("8_qek5x")
+slot_id = 8
+
+[node name="Slot_HAND_2" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=1515872739]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 296.0
+offset_top = 122.0
+offset_right = 296.0
+offset_bottom = 122.0
+tooltip_text = "HAND_2"
+script = ExtResource("8_qek5x")
+slot_id = 14
+
+[node name="Slot_RING_1" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=1975712983]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 6.0
+offset_top = 180.0
+offset_right = 6.0
+offset_bottom = 180.0
+tooltip_text = "RING_1"
+script = ExtResource("8_qek5x")
+slot_id = 16
+
+[node name="Slot_RING_2" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=1375079252]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 64.0
+offset_top = 180.0
+offset_right = 64.0
+offset_bottom = 180.0
+tooltip_text = "RING_2"
+script = ExtResource("8_qek5x")
+slot_id = 17
+
+[node name="Slot_BELT" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=203995154]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 122.0
+offset_top = 180.0
+offset_right = 122.0
+offset_bottom = 180.0
+tooltip_text = "BELT"
+script = ExtResource("8_qek5x")
+slot_id = 12
+
+[node name="Slot_LEGS_PRIMARY" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=111487911]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 180.0
+offset_top = 180.0
+offset_right = 180.0
+offset_bottom = 180.0
+tooltip_text = "LEGS_PRIMARY"
+script = ExtResource("8_qek5x")
+slot_id = 5
+
+[node name="Slot_RING_3" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=474927057]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 238.0
+offset_top = 180.0
+offset_right = 238.0
+offset_bottom = 180.0
+tooltip_text = "RING_3"
+script = ExtResource("8_qek5x")
+slot_id = 18
+
+[node name="Slot_RING_4" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=639260881]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 296.0
+offset_top = 180.0
+offset_right = 296.0
+offset_bottom = 180.0
+tooltip_text = "RING_4"
+script = ExtResource("8_qek5x")
+slot_id = 19
+
+[node name="Slot_POCKET_1" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=1930751125]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 64.0
+offset_top = 238.0
+offset_right = 64.0
+offset_bottom = 238.0
+tooltip_text = "POCKET_1"
+script = ExtResource("8_qek5x")
+slot_id = 20
+
+[node name="Slot_LEGS_SECONDARY" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=1247490401]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 122.0
+offset_top = 238.0
+offset_right = 122.0
+offset_bottom = 238.0
+tooltip_text = "LEGS_SECONDARY"
+script = ExtResource("8_qek5x")
+slot_id = 6
+
+[node name="Slot_FEET" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=1626290209]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 180.0
+offset_top = 238.0
+offset_right = 180.0
+offset_bottom = 238.0
+tooltip_text = "FEET"
+script = ExtResource("8_qek5x")
+slot_id = 7
+
+[node name="Slot_POCKET_2" type="Control" parent="CanvasLayer/Control/Doll/MarginContainer/EquipmentDollUI" unique_id=1876250031]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 238.0
+offset_top = 238.0
+offset_right = 238.0
+offset_bottom = 238.0
+tooltip_text = "POCKET_2"
+script = ExtResource("8_qek5x")
+slot_id = 21

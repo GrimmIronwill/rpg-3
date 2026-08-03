@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://c0kmykcnmu6i3"]
+
+[ext_resource type="Script" uid="uid://b4p34rl3g3dij" path="res://scenes/demo/demo_level.gd" id="1_6a7gy"]
+[ext_resource type="Script" uid="uid://rrp11n518b6t" path="res://scripts/world/world_builder.gd" id="2_rletu"]
+[ext_resource type="Script" uid="uid://debqmkidrrehy" path="res://scripts/world/biomes/biome_forest.gd" id="3_okwrk"]
+[ext_resource type="Texture2D" uid="uid://dvpybj3sryi18" path="res://sprites/tilesets/TilesetDebug.png" id="4_fidxf"]
+[ext_resource type="Script" uid="uid://choxeey12y8xe" path="res://scripts/world/biomes/biome_generator.gd" id="4_mf6ly"]
+[ext_resource type="Script" uid="uid://8v01qac3mdv" path="res://addons/camera/MapCamera2D.gd" id="5_mf6ly"]
+[ext_resource type="PackedScene" uid="uid://xdum7b6fyudn" path="res://scenes/player/player.tscn" id="7_3hstr"]
+[ext_resource type="Script" uid="uid://eugl6wijid0x" path="res://scripts/world/chest.gd" id="8_epem1"]
+[ext_resource type="Texture2D" uid="uid://bg5uyk6npe5u0" path="res://sprites/characters/debug.png" id="9_dxx6j"]
+
+[sub_resource type="Resource" id="Resource_rletu"]
+script = ExtResource("3_okwrk")
+metadata/_custom_type_script = "uid://debqmkidrrehy"
+
+[sub_resource type="Resource" id="Resource_mf6ly"]
+script = ExtResource("3_okwrk")
+metadata/_custom_type_script = "uid://debqmkidrrehy"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mf6ly"]
+texture = ExtResource("4_fidxf")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_okwrk"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_mf6ly")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dxx6j"]
+radius = 14.0
+
+[node name="DemoLevel" type="Node2D" unique_id=625991631 node_paths=PackedStringArray("WorldGen", "Tilemap", "AICharHolder", "ItemsHolder")]
+script = ExtResource("1_6a7gy")
+WorldGen = NodePath("WorldBuilder")
+Tilemap = NodePath("TileMapLayer")
+AICharHolder = NodePath("CharacterHolder/AI")
+ItemsHolder = NodePath("CharacterHolder/Items")
+
+[node name="WorldBuilder" type="Node" parent="." unique_id=485147630]
+script = ExtResource("2_rletu")
+FullRandom = true
+TileSize = Vector2i(32, 32)
+biome = SubResource("Resource_rletu")
+biome_pool = Array[ExtResource("4_mf6ly")]([SubResource("Resource_mf6ly")])
+metadata/_custom_type_script = "uid://rrp11n518b6t"
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=416299819]
+tile_set = SubResource("TileSet_okwrk")
+
+[node name="MapCamera2D" type="Camera2D" parent="." unique_id=109238995]
+script = ExtResource("5_mf6ly")
+
+[node name="CharacterHolder" type="Node" parent="." unique_id=839813928]
+
+[node name="AI" type="Node" parent="CharacterHolder" unique_id=1788223210]
+
+[node name="Players" type="Node" parent="CharacterHolder" unique_id=1134138411]
+
+[node name="Player" parent="CharacterHolder/Players" unique_id=1698183234 instance=ExtResource("7_3hstr")]
+
+[node name="Items" type="Node" parent="CharacterHolder" unique_id=525758763]
+
+[node name="Containers" type="Node" parent="CharacterHolder" unique_id=1228579128]
+
+[node name="Chest" type="StaticBody2D" parent="CharacterHolder/Containers" unique_id=1839865019]
+position = Vector2(510, 200)
+script = ExtResource("8_epem1")
+metadata/_custom_type_script = "uid://eugl6wijid0x"
+
+[node name="MainCollision" type="CollisionShape2D" parent="CharacterHolder/Containers/Chest" unique_id=1904911083]
+shape = SubResource("CircleShape2D_dxx6j")
+
+[node name="Sprite" type="Sprite2D" parent="CharacterHolder/Containers/Chest" unique_id=10217181]
+texture = ExtResource("9_dxx6j")

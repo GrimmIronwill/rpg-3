@@ -1,0 +1,1663 @@
+[gd_resource type="Resource" script_class="DBDatabase" format=3 uid="uid://da8ke4aivhmby"]
+
+[ext_resource type="Script" uid="uid://p47pb8tqotdv" path="res://addons/gd_database/core/db_database.gd" id="1_50t21"]
+[ext_resource type="Script" uid="uid://ci3webrdw5mg2" path="res://addons/gd_database/core/db_entry.gd" id="2_4k8vw"]
+[ext_resource type="Script" uid="uid://c1tkok52h302j" path="res://addons/gd_database/core/db_field_def.gd" id="3_2xf5e"]
+[ext_resource type="Script" uid="uid://7cw7h5h32u0n" path="res://addons/gd_database/core/db_schema.gd" id="4_tl7pu"]
+[ext_resource type="Script" uid="uid://dmlsfndywu7gd" path="res://addons/gd_database/core/db_table.gd" id="5_0xu6q"]
+
+[sub_resource type="Resource" id="Resource_kc63f"]
+script = ExtResource("2_4k8vw")
+entry_id = "characterstats_0002"
+schema_name = "CharactersSchema"
+data = {
+"accuracy": Vector2(0, 0),
+"body": 1,
+"can_gain_xp": false,
+"cap_xp_per_lvl": 0.0,
+"carry_weight": 50.0,
+"crit_chance": 5.0,
+"crit_multiplier": 1.5,
+"current_xp": 0.0,
+"damage_table": {},
+"dexterity": 1,
+"evasion": Vector2(0, 0),
+"faction": "",
+"faction_relations": {},
+"health": Vector2(5, 5),
+"health_regen": Vector2(0, 0),
+"hearing_radius": 15.0,
+"hearing_strength": 10.0,
+"intelligence": 1,
+"level": 1,
+"mana": Vector2(0, 0),
+"mana_regen": Vector2(0, 0),
+"name": "",
+"perception": 1,
+"resistances": {},
+"specializations": {},
+"speed_bonus": Vector2(0, 0),
+"stamina": Vector2(0, 0),
+"stamina_regen": Vector2(0, 0),
+"stealth_vision_angle": 60.0,
+"stealth_vision_radius": 3.0,
+"strength": 1,
+"vision_angle": 120.0,
+"vision_radius": 10.0
+}
+
+[sub_resource type="Resource" id="Resource_02ko1"]
+script = ExtResource("3_2xf5e")
+field_name = "name"
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_05sxe"]
+script = ExtResource("3_2xf5e")
+field_name = "faction"
+field_type = 8
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_u7r5q"]
+script = ExtResource("3_2xf5e")
+field_name = "faction_relations"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray("ALLIED", "FRIENDLY", "NEUTRAL", "SUSPICIOUS", "HOSTILE")
+enum_ref = "GlobalData/FactionRelation"
+dict_key_type = 8
+dict_value_type = 4
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_ekxol"]
+script = ExtResource("3_2xf5e")
+field_name = "level"
+field_type = 0
+default_value = 1
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_8iai3"]
+script = ExtResource("3_2xf5e")
+field_name = "current_xp"
+field_type = 1
+default_value = 0.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_6w24t"]
+script = ExtResource("3_2xf5e")
+field_name = "cap_xp_per_lvl"
+field_type = 1
+default_value = 0.0
+description = "Сколько опыта нужно для повышения уровня в зависимости от уровня. Например, уровень 3, нужно 10 опыта за уровень. Итого 3 * 10 = кап 30"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_p23c1"]
+script = ExtResource("3_2xf5e")
+field_name = "can_gain_xp"
+field_type = 3
+default_value = false
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_3sww2"]
+script = ExtResource("3_2xf5e")
+field_name = "strength"
+field_type = 0
+default_value = 1
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_t07qi"]
+script = ExtResource("3_2xf5e")
+field_name = "dexterity"
+field_type = 0
+default_value = 1
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_7tqqj"]
+script = ExtResource("3_2xf5e")
+field_name = "body"
+field_type = 0
+default_value = 1
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_wc51y"]
+script = ExtResource("3_2xf5e")
+field_name = "intelligence"
+field_type = 0
+default_value = 1
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_52n4s"]
+script = ExtResource("3_2xf5e")
+field_name = "perception"
+field_type = 0
+default_value = 1
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_26y36"]
+script = ExtResource("3_2xf5e")
+field_name = "specializations"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 0
+dict_key_enum_values = PackedStringArray("WARFARE", "ASSASSIN", "RANGED_COMBAT", "SORCERY", "ALCHEMY", "SURVIVAL")
+dict_key_enum_ref = "GlobalData/Specialization"
+
+[sub_resource type="Resource" id="Resource_gt036"]
+script = ExtResource("3_2xf5e")
+field_name = "damage_table"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 1
+dict_key_enum_values = PackedStringArray("SLASH", "SLICE", "PIERCE", "BLUNT", "FIRE", "COLD", "POISON", "LIGHTNING", "HOLY", "DARK")
+dict_key_enum_ref = "GlobalData/DamageTypes"
+
+[sub_resource type="Resource" id="Resource_4k46l"]
+script = ExtResource("3_2xf5e")
+field_name = "crit_chance"
+field_type = 1
+default_value = 5.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_a6i33"]
+script = ExtResource("3_2xf5e")
+field_name = "crit_multiplier"
+field_type = 1
+default_value = 1.5
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_uooq3"]
+script = ExtResource("3_2xf5e")
+field_name = "health"
+field_type = 5
+default_value = Vector2(5, 5)
+description = "X = текущее, Y = макс"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_l8knq"]
+script = ExtResource("3_2xf5e")
+field_name = "health_regen"
+field_type = 5
+default_value = null
+description = "X = в ед. Y = в проц"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_hyw6d"]
+script = ExtResource("3_2xf5e")
+field_name = "stamina"
+field_type = 5
+default_value = null
+description = "X = текущее, Y = макс"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_s5wrx"]
+script = ExtResource("3_2xf5e")
+field_name = "stamina_regen"
+field_type = 5
+default_value = null
+description = "X = в ед. Y = в проц"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_88cwj"]
+script = ExtResource("3_2xf5e")
+field_name = "mana"
+field_type = 5
+default_value = null
+description = "X = текущее, Y = макс"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_ql3hc"]
+script = ExtResource("3_2xf5e")
+field_name = "mana_regen"
+field_type = 5
+default_value = null
+description = "X = в ед. Y = в проц"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_o50l1"]
+script = ExtResource("3_2xf5e")
+field_name = "speed_bonus"
+field_type = 5
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_owueg"]
+script = ExtResource("3_2xf5e")
+field_name = "carry_weight"
+field_type = 1
+default_value = 50.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_6p7ax"]
+script = ExtResource("3_2xf5e")
+field_name = "vision_radius"
+field_type = 1
+default_value = 10.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_k5fb5"]
+script = ExtResource("3_2xf5e")
+field_name = "vision_angle"
+field_type = 1
+default_value = 120.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_273ep"]
+script = ExtResource("3_2xf5e")
+field_name = "stealth_vision_radius"
+field_type = 1
+default_value = 3.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_20dii"]
+script = ExtResource("3_2xf5e")
+field_name = "stealth_vision_angle"
+field_type = 1
+default_value = 60.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_botet"]
+script = ExtResource("3_2xf5e")
+field_name = "hearing_radius"
+field_type = 1
+default_value = 15.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_cpq7i"]
+script = ExtResource("3_2xf5e")
+field_name = "hearing_strength"
+field_type = 1
+default_value = 10.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_gileu"]
+script = ExtResource("3_2xf5e")
+field_name = "resistances"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 5
+dict_key_enum_values = PackedStringArray("SLASH", "SLICE", "PIERCE", "BLUNT", "FIRE", "COLD", "POISON", "LIGHTNING", "HOLY", "DARK")
+dict_key_enum_ref = "GlobalData/DamageTypes"
+
+[sub_resource type="Resource" id="Resource_4ivxe"]
+script = ExtResource("3_2xf5e")
+field_name = "evasion"
+field_type = 5
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_803xl"]
+script = ExtResource("3_2xf5e")
+field_name = "accuracy"
+field_type = 5
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_17n0k"]
+script = ExtResource("4_tl7pu")
+schema_name = "CharactersSchema"
+fields = Array[ExtResource("3_2xf5e")]([SubResource("Resource_02ko1"), SubResource("Resource_05sxe"), SubResource("Resource_u7r5q"), SubResource("Resource_ekxol"), SubResource("Resource_8iai3"), SubResource("Resource_6w24t"), SubResource("Resource_p23c1"), SubResource("Resource_3sww2"), SubResource("Resource_t07qi"), SubResource("Resource_7tqqj"), SubResource("Resource_wc51y"), SubResource("Resource_52n4s"), SubResource("Resource_26y36"), SubResource("Resource_gt036"), SubResource("Resource_4k46l"), SubResource("Resource_a6i33"), SubResource("Resource_uooq3"), SubResource("Resource_l8knq"), SubResource("Resource_hyw6d"), SubResource("Resource_s5wrx"), SubResource("Resource_88cwj"), SubResource("Resource_ql3hc"), SubResource("Resource_o50l1"), SubResource("Resource_owueg"), SubResource("Resource_6p7ax"), SubResource("Resource_k5fb5"), SubResource("Resource_273ep"), SubResource("Resource_20dii"), SubResource("Resource_botet"), SubResource("Resource_cpq7i"), SubResource("Resource_gileu"), SubResource("Resource_4ivxe"), SubResource("Resource_803xl")])
+
+[sub_resource type="Resource" id="Resource_l34t4"]
+script = ExtResource("5_0xu6q")
+table_name = "CharacterStats"
+schema = SubResource("Resource_17n0k")
+entries = Array[ExtResource("2_4k8vw")]([SubResource("Resource_kc63f")])
+
+[sub_resource type="Resource" id="Resource_2m7n6"]
+script = ExtResource("2_4k8vw")
+entry_id = "consumables_0001"
+schema_name = "ConsumablesSchema"
+data = {
+"accuracy": Vector2(0, 0),
+"attribute_bonuses": {},
+"bonus_attack_speed": 0.0,
+"bonus_health": Vector2(0, 0),
+"bonus_mana": Vector2(0, 0),
+"bonus_stamina": Vector2(0, 0),
+"crit_chance": 0.0,
+"crit_multiplier": 0.0,
+"damage_bonuses": {},
+"durability": 1,
+"effect_duration": 0.0,
+"evasion": Vector2(0, 0),
+"global_damage_percent": 0.0,
+"item_data": {
+"cost_money": 0.0,
+"cost_value_points": 0.0,
+"item_type": 0,
+"max_stack": 1,
+"name": "",
+"quantity": 1,
+"rarity": 0,
+"size": Vector2(1, 1),
+"sprite_container": "",
+"sprite_mask_container": "",
+"sprite_mask_world": "",
+"sprite_world": "",
+"weight": 0.0
+},
+"level": 1,
+"mana_cost_modifier": 0.0,
+"max_durability": 1,
+"requirements": {},
+"resistances": {},
+"specialization_bonuses": {},
+"speed_bonus": Vector2(0, 0),
+"stamina_cost_modifier": 0.0,
+"usable_in_combat": true,
+"usable_out_of_combat": true,
+"use_type": 0,
+"valid_equip_slots": []
+}
+
+[sub_resource type="Resource" id="Resource_e5mur"]
+script = ExtResource("3_2xf5e")
+field_name = "item_data"
+field_type = 10
+default_value = null
+enum_values = PackedStringArray()
+nested_schema_name = "Items"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_38rjk"]
+script = ExtResource("3_2xf5e")
+field_name = "use_type"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("INSTANT", "BUFF_TIMED", "THROW", "APPLY_TO_WEAPON", "SCROLL", "FOOD")
+enum_ref = "GlobalData/ConsumableUseType"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_lyh02"]
+script = ExtResource("3_2xf5e")
+field_name = "effect_duration"
+field_type = 1
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_46kjo"]
+script = ExtResource("3_2xf5e")
+field_name = "usable_in_combat"
+field_type = 3
+default_value = true
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_52xhf"]
+script = ExtResource("3_2xf5e")
+field_name = "usable_out_of_combat"
+field_type = 3
+default_value = true
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_tpkyd"]
+script = ExtResource("3_2xf5e")
+field_name = "level"
+field_type = 0
+default_value = 1
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_42s11"]
+script = ExtResource("3_2xf5e")
+field_name = "requirements"
+field_type = 11
+default_value = null
+description = "Требования по атрибутам для использования"
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 0
+dict_key_enum_values = PackedStringArray("STRENGTH", "DEXTERITY", "BODY", "INTELLIGENCE", "PERCEPTION")
+dict_key_enum_ref = "GlobalData/Attribute"
+
+[sub_resource type="Resource" id="Resource_1cha2"]
+script = ExtResource("3_2xf5e")
+field_name = "valid_equip_slots"
+field_type = 9
+default_value = null
+enum_values = PackedStringArray("HEAD_PRIMARY", "HEAD_SECONDARY", "TORSO_PRIMARY", "TORSO_SECONDARY", "ARMS", "LEGS_PRIMARY", "LEGS_SECONDARY", "FEET", "GLOVES", "BACK", "BODY_SLOT_1", "BODY_SLOT_2", "BELT", "HAND_1", "HAND_2", "AMULET", "RING_1", "RING_2", "RING_3", "RING_4", "POCKET_1", "POCKET_2")
+enum_ref = "GlobalData/EquipSlot"
+array_element_type = 4
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_f5ngt"]
+script = ExtResource("3_2xf5e")
+field_name = "damage_bonuses"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 5
+dict_key_enum_values = PackedStringArray("SLASH", "SLICE", "PIERCE", "BLUNT", "FIRE", "COLD", "POISON", "LIGHTNING", "HOLY", "DARK")
+dict_key_enum_ref = "GlobalData/DamageTypes"
+
+[sub_resource type="Resource" id="Resource_u1bal"]
+script = ExtResource("3_2xf5e")
+field_name = "global_damage_percent"
+field_type = 1
+default_value = 0.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_d1178"]
+script = ExtResource("3_2xf5e")
+field_name = "bonus_attack_speed"
+field_type = 1
+default_value = 0.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_lvi61"]
+script = ExtResource("3_2xf5e")
+field_name = "stamina_cost_modifier"
+field_type = 1
+default_value = 0.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_f8ee1"]
+script = ExtResource("3_2xf5e")
+field_name = "mana_cost_modifier"
+field_type = 1
+default_value = 0.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_xj6xo"]
+script = ExtResource("3_2xf5e")
+field_name = "crit_chance"
+field_type = 1
+default_value = 0.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_2fu7t"]
+script = ExtResource("3_2xf5e")
+field_name = "crit_multiplier"
+field_type = 1
+default_value = 0.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_db5oy"]
+script = ExtResource("3_2xf5e")
+field_name = "durability"
+field_type = 0
+default_value = 1
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_76oa6"]
+script = ExtResource("3_2xf5e")
+field_name = "max_durability"
+field_type = 0
+default_value = 1
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_kerb6"]
+script = ExtResource("3_2xf5e")
+field_name = "attribute_bonuses"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 5
+dict_key_enum_values = PackedStringArray("STRENGTH", "DEXTERITY", "BODY", "INTELLIGENCE", "PERCEPTION")
+dict_key_enum_ref = "GlobalData/Attribute"
+
+[sub_resource type="Resource" id="Resource_isdc6"]
+script = ExtResource("3_2xf5e")
+field_name = "specialization_bonuses"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 5
+dict_key_enum_values = PackedStringArray("WARFARE", "ASSASSIN", "RANGED_COMBAT", "SORCERY", "ALCHEMY", "SURVIVAL")
+dict_key_enum_ref = "GlobalData/Specialization"
+
+[sub_resource type="Resource" id="Resource_bvvfg"]
+script = ExtResource("3_2xf5e")
+field_name = "resistances"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 5
+dict_key_enum_values = PackedStringArray("SLASH", "SLICE", "PIERCE", "BLUNT", "FIRE", "COLD", "POISON", "LIGHTNING", "HOLY", "DARK")
+dict_key_enum_ref = "GlobalData/DamageTypes"
+
+[sub_resource type="Resource" id="Resource_sgkbu"]
+script = ExtResource("3_2xf5e")
+field_name = "bonus_health"
+field_type = 5
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_f4dsj"]
+script = ExtResource("3_2xf5e")
+field_name = "bonus_stamina"
+field_type = 5
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_nj05i"]
+script = ExtResource("3_2xf5e")
+field_name = "bonus_mana"
+field_type = 5
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_2evva"]
+script = ExtResource("3_2xf5e")
+field_name = "evasion"
+field_type = 5
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_j7gn3"]
+script = ExtResource("3_2xf5e")
+field_name = "accuracy"
+field_type = 5
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_05m4q"]
+script = ExtResource("3_2xf5e")
+field_name = "speed_bonus"
+field_type = 5
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_rif0u"]
+script = ExtResource("4_tl7pu")
+schema_name = "ConsumablesSchema"
+fields = Array[ExtResource("3_2xf5e")]([SubResource("Resource_e5mur"), SubResource("Resource_38rjk"), SubResource("Resource_lyh02"), SubResource("Resource_46kjo"), SubResource("Resource_52xhf"), SubResource("Resource_tpkyd"), SubResource("Resource_42s11"), SubResource("Resource_1cha2"), SubResource("Resource_f5ngt"), SubResource("Resource_u1bal"), SubResource("Resource_d1178"), SubResource("Resource_lvi61"), SubResource("Resource_f8ee1"), SubResource("Resource_xj6xo"), SubResource("Resource_2fu7t"), SubResource("Resource_db5oy"), SubResource("Resource_76oa6"), SubResource("Resource_kerb6"), SubResource("Resource_isdc6"), SubResource("Resource_bvvfg"), SubResource("Resource_sgkbu"), SubResource("Resource_f4dsj"), SubResource("Resource_nj05i"), SubResource("Resource_2evva"), SubResource("Resource_j7gn3"), SubResource("Resource_05m4q")])
+
+[sub_resource type="Resource" id="Resource_bvut8"]
+script = ExtResource("5_0xu6q")
+table_name = "Consumables"
+schema = SubResource("Resource_rif0u")
+entries = Array[ExtResource("2_4k8vw")]([SubResource("Resource_2m7n6")])
+
+[sub_resource type="Resource" id="Resource_sussa"]
+script = ExtResource("2_4k8vw")
+entry_id = "containers_0001"
+schema_name = "ContainersSchema"
+data = {
+"allowed_item_types": [],
+"container_grid_size": Vector2(4, 4),
+"equipment_data": {
+"accuracy": Vector2(0, 0),
+"attribute_bonuses": {},
+"bonus_attack_speed": 0.0,
+"bonus_health": Vector2(0, 0),
+"bonus_mana": Vector2(0, 0),
+"bonus_stamina": Vector2(0, 0),
+"crit_chance": 0.0,
+"crit_multiplier": 0.0,
+"damage_bonuses": {},
+"durability": 0,
+"equipment_category": 15,
+"evasion": Vector2(0, 0),
+"global_damage_percent": 0.0,
+"inserted_runes": [],
+"item_data": {
+"cost_money": 0.0,
+"cost_value_points": 0.0,
+"item_type": 0,
+"max_stack": 1,
+"name": "",
+"quantity": 1,
+"rarity": 0,
+"size": Vector2(2, 1),
+"sprite_container": "res://sprites/items/equipment/belt.png",
+"sprite_mask_container": "res://sprites/items/equipment/belt.png",
+"sprite_mask_world": "",
+"sprite_world": "",
+"weight": 0.0
+},
+"level": 1,
+"mana_cost_modifier": 0.0,
+"max_durability": 0,
+"random_profile": "",
+"requirements": {},
+"resistances": {},
+"rune_slots": 0,
+"specialization_bonuses": {},
+"speed_bonus": Vector2(0, 0),
+"stamina_cost_modifier": 0.0,
+"valid_equip_slots": []
+},
+"window_cell_size": 48
+}
+
+[sub_resource type="Resource" id="Resource_ia2rh"]
+script = ExtResource("3_2xf5e")
+field_name = "equipment_data"
+field_type = 10
+default_value = null
+enum_values = PackedStringArray()
+nested_schema_name = "Equipment"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_rvhcq"]
+script = ExtResource("3_2xf5e")
+field_name = "container_grid_size"
+field_type = 5
+default_value = Vector2(4, 4)
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_6a60n"]
+script = ExtResource("3_2xf5e")
+field_name = "allowed_item_types"
+field_type = 9
+default_value = null
+description = "Пусто = любые"
+enum_values = PackedStringArray("EQUIPMENT", "CONSUMABLE", "MATERIAL", "QUEST", "JUNK", "AMMO", "KEY")
+enum_ref = "GlobalData/ItemType"
+array_element_type = 4
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_ptdi8"]
+script = ExtResource("3_2xf5e")
+field_name = "window_cell_size"
+field_type = 0
+default_value = 48
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_gnfdt"]
+script = ExtResource("4_tl7pu")
+schema_name = "ContainersSchema"
+fields = Array[ExtResource("3_2xf5e")]([SubResource("Resource_ia2rh"), SubResource("Resource_rvhcq"), SubResource("Resource_6a60n"), SubResource("Resource_ptdi8")])
+
+[sub_resource type="Resource" id="Resource_hjwwe"]
+script = ExtResource("5_0xu6q")
+table_name = "Containers"
+schema = SubResource("Resource_gnfdt")
+entries = Array[ExtResource("2_4k8vw")]([SubResource("Resource_sussa")])
+
+[sub_resource type="Resource" id="Resource_b2r3d"]
+script = ExtResource("2_4k8vw")
+entry_id = "enums_0001"
+schema_name = "GlobalData"
+data = {
+"AttackActivation": 0,
+"Attribute": 0,
+"ConsumableUseType": 0,
+"DamageCategory": 0,
+"DamageTypes": 0,
+"EquipCategory": 0,
+"EquipSlot": 0,
+"EquipVisualType": 0,
+"Faction": 0,
+"FactionRelation": 0,
+"ItemType": 0,
+"Rarity": 0,
+"Specialization": 0,
+"WeaponGrip": 0,
+"WeaponRange": 0,
+"WeaponType": 0
+}
+
+[sub_resource type="Resource" id="Resource_lclav"]
+script = ExtResource("3_2xf5e")
+field_name = "DamageTypes"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("SLASH", "SLICE", "PIERCE", "BLUNT", "FIRE", "COLD", "POISON", "LIGHTNING", "HOLY", "DARK")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_4k8vw"]
+script = ExtResource("3_2xf5e")
+field_name = "DamageCategory"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("PHYSICAL", "MAGICAL")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_2xf5e"]
+script = ExtResource("3_2xf5e")
+field_name = "WeaponType"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("SWORD", "AXE", "MACE", "DAGGER", "SPEAR", "BOW", "CROSSBOW", "STAFF", "WAND")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_tl7pu"]
+script = ExtResource("3_2xf5e")
+field_name = "WeaponGrip"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("ONE_HANDED", "TWO_HANDED")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_0xu6q"]
+script = ExtResource("3_2xf5e")
+field_name = "WeaponRange"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("MELEE", "RANGED")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_6yc7y"]
+script = ExtResource("3_2xf5e")
+field_name = "AttackActivation"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("PROJECTILE", "INSTANT", "PROJECTILE_AOE", "INSTANT_AOE")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_c4yg2"]
+script = ExtResource("3_2xf5e")
+field_name = "Faction"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("NEUTRAL", "PLAYER", "BANDITS", "UNDEAD", "BEASTS")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_qn83j"]
+script = ExtResource("3_2xf5e")
+field_name = "FactionRelation"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("ALLIED", "FRIENDLY", "NEUTRAL", "SUSPICIOUS", "HOSTILE")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_kwiso"]
+script = ExtResource("3_2xf5e")
+field_name = "EquipSlot"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("HEAD_PRIMARY", "HEAD_SECONDARY", "TORSO_PRIMARY", "TORSO_SECONDARY", "ARMS", "LEGS_PRIMARY", "LEGS_SECONDARY", "FEET", "GLOVES", "BACK", "BODY_SLOT_1", "BODY_SLOT_2", "BELT", "HAND_1", "HAND_2", "AMULET", "RING_1", "RING_2", "RING_3", "RING_4", "POCKET_1", "POCKET_2")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_306na"]
+script = ExtResource("3_2xf5e")
+field_name = "EquipCategory"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("HELMET", "HOOD", "MASK", "CHEST_ARMOR", "UNDERARMOR", "ARM_GUARD", "LEG_ARMOR", "LEG_LIGHT", "BOOTS", "GLOVES", "CLOAK", "BACKPACK", "HOLSTER", "QUIVER", "POTION_BELT", "BELT", "WEAPON", "SHIELD", "AMULET", "RING", "CONSUMABLE_QUICK")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_5xvwv"]
+script = ExtResource("3_2xf5e")
+field_name = "EquipVisualType"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("NONE", "SPRITE_OVERRIDE", "SPRITE_OVERLAY", "PARTICLE_EFFECT", "AURA_EFFECT", "SHADER_EFFECT", "TRAIL_EFFECT")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_x8ft4"]
+script = ExtResource("3_2xf5e")
+field_name = "Attribute"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("STRENGTH", "DEXTERITY", "BODY", "INTELLIGENCE", "PERCEPTION")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_ljvph"]
+script = ExtResource("3_2xf5e")
+field_name = "Specialization"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("WARFARE", "ASSASSIN", "RANGED_COMBAT", "SORCERY", "ALCHEMY", "SURVIVAL")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_x6nly"]
+script = ExtResource("3_2xf5e")
+field_name = "ConsumableUseType"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("INSTANT", "BUFF_TIMED", "THROW", "APPLY_TO_WEAPON", "SCROLL", "FOOD")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_36npf"]
+script = ExtResource("3_2xf5e")
+field_name = "Rarity"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("COMMON", "UNCOMMON", "RARE", "EPIC", "LEGENDARY", "DIVINE", "UNIQUE")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_fwo7s"]
+script = ExtResource("3_2xf5e")
+field_name = "ItemType"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("EQUIPMENT", "CONSUMABLE", "MATERIAL", "QUEST", "JUNK", "AMMO", "KEY")
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_uips0"]
+script = ExtResource("4_tl7pu")
+schema_name = "GlobalData"
+fields = Array[ExtResource("3_2xf5e")]([SubResource("Resource_lclav"), SubResource("Resource_4k8vw"), SubResource("Resource_2xf5e"), SubResource("Resource_tl7pu"), SubResource("Resource_0xu6q"), SubResource("Resource_6yc7y"), SubResource("Resource_c4yg2"), SubResource("Resource_qn83j"), SubResource("Resource_kwiso"), SubResource("Resource_306na"), SubResource("Resource_5xvwv"), SubResource("Resource_x8ft4"), SubResource("Resource_ljvph"), SubResource("Resource_x6nly"), SubResource("Resource_36npf"), SubResource("Resource_fwo7s")])
+
+[sub_resource type="Resource" id="Resource_a8iyq"]
+script = ExtResource("5_0xu6q")
+table_name = "Enums"
+schema = SubResource("Resource_uips0")
+entries = Array[ExtResource("2_4k8vw")]([SubResource("Resource_b2r3d")])
+
+[sub_resource type="Resource" id="Resource_4j4h4"]
+script = ExtResource("2_4k8vw")
+entry_id = "equipment_0001"
+schema_name = "EquipmentSchema"
+data = {
+"accuracy": Vector2(0, 0),
+"attribute_bonuses": {},
+"bonus_attack_speed": 0.0,
+"bonus_health": Vector2(0, 0),
+"bonus_mana": Vector2(0, 0),
+"bonus_stamina": Vector2(0, 0),
+"crit_chance": 0.0,
+"crit_multiplier": 0.0,
+"damage_bonuses": {},
+"durability": 0,
+"equipment_category": 0,
+"evasion": Vector2(0, 0),
+"global_damage_percent": 0.0,
+"inserted_runes": [],
+"item_data": {
+"cost_money": 0.0,
+"cost_value_points": 0.0,
+"item_type": 0,
+"max_stack": 1,
+"name": "",
+"quantity": 1,
+"rarity": 0,
+"size": Vector2(1, 1),
+"sprite_container": "",
+"sprite_mask_container": "",
+"sprite_mask_world": "",
+"sprite_world": "",
+"weight": 0.0
+},
+"level": 1,
+"mana_cost_modifier": 0.0,
+"max_durability": 0,
+"random_profile": "",
+"requirements": {},
+"resistances": {},
+"rune_slots": 0,
+"specialization_bonuses": {},
+"speed_bonus": Vector2(0, 0),
+"stamina_cost_modifier": 0.0,
+"valid_equip_slots": []
+}
+
+[sub_resource type="Resource" id="Resource_8ulkf"]
+script = ExtResource("3_2xf5e")
+field_name = "item_data"
+field_type = 10
+default_value = null
+enum_values = PackedStringArray()
+nested_schema_name = "Items"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_ny1r6"]
+script = ExtResource("3_2xf5e")
+ref_table_name = "RandomProfiles"
+field_name = "random_profile"
+field_type = 12
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_wl14i"]
+script = ExtResource("3_2xf5e")
+field_name = "valid_equip_slots"
+field_type = 9
+default_value = null
+enum_values = PackedStringArray("HEAD_PRIMARY", "HEAD_SECONDARY", "TORSO_PRIMARY", "TORSO_SECONDARY", "ARMS", "LEGS_PRIMARY", "LEGS_SECONDARY", "FEET", "GLOVES", "BACK", "BODY_SLOT_1", "BODY_SLOT_2", "BELT", "HAND_1", "HAND_2", "AMULET", "RING_1", "RING_2", "RING_3", "RING_4", "POCKET_1", "POCKET_2")
+enum_ref = "GlobalData/EquipSlot"
+array_element_type = 4
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_ehwfi"]
+script = ExtResource("3_2xf5e")
+field_name = "equipment_category"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("HELMET", "HOOD", "MASK", "CHEST_ARMOR", "UNDERARMOR", "ARM_GUARD", "LEG_ARMOR", "LEG_LIGHT", "BOOTS", "GLOVES", "CLOAK", "BACKPACK", "HOLSTER", "QUIVER", "POTION_BELT", "BELT", "WEAPON", "SHIELD", "AMULET", "RING", "CONSUMABLE_QUICK")
+enum_ref = "GlobalData/EquipCategory"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_tlr58"]
+script = ExtResource("3_2xf5e")
+field_name = "level"
+field_type = 0
+default_value = 1
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_xbb53"]
+script = ExtResource("3_2xf5e")
+field_name = "requirements"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 0
+dict_key_enum_values = PackedStringArray("STRENGTH", "DEXTERITY", "BODY", "INTELLIGENCE", "PERCEPTION")
+dict_key_enum_ref = "GlobalData/Attribute"
+
+[sub_resource type="Resource" id="Resource_0g3h5"]
+script = ExtResource("3_2xf5e")
+field_name = "attribute_bonuses"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 5
+dict_key_enum_values = PackedStringArray("STRENGTH", "DEXTERITY", "BODY", "INTELLIGENCE", "PERCEPTION")
+dict_key_enum_ref = "GlobalData/Attribute"
+
+[sub_resource type="Resource" id="Resource_iguyh"]
+script = ExtResource("3_2xf5e")
+field_name = "specialization_bonuses"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 5
+dict_key_enum_values = PackedStringArray("WARFARE", "ASSASSIN", "RANGED_COMBAT", "SORCERY", "ALCHEMY", "SURVIVAL")
+dict_key_enum_ref = "GlobalData/Specialization"
+
+[sub_resource type="Resource" id="Resource_ckysn"]
+script = ExtResource("3_2xf5e")
+field_name = "damage_bonuses"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 5
+dict_key_enum_values = PackedStringArray("SLASH", "SLICE", "PIERCE", "BLUNT", "FIRE", "COLD", "POISON", "LIGHTNING", "HOLY", "DARK")
+dict_key_enum_ref = "GlobalData/DamageTypes"
+
+[sub_resource type="Resource" id="Resource_6fews"]
+script = ExtResource("3_2xf5e")
+field_name = "global_damage_percent"
+field_type = 1
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_2aot3"]
+script = ExtResource("3_2xf5e")
+field_name = "bonus_attack_speed"
+field_type = 1
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_vqoyv"]
+script = ExtResource("3_2xf5e")
+field_name = "resistances"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 5
+dict_key_enum_values = PackedStringArray("SLASH", "SLICE", "PIERCE", "BLUNT", "FIRE", "COLD", "POISON", "LIGHTNING", "HOLY", "DARK")
+dict_key_enum_ref = "GlobalData/DamageTypes"
+
+[sub_resource type="Resource" id="Resource_23c87"]
+script = ExtResource("3_2xf5e")
+field_name = "bonus_health"
+field_type = 5
+default_value = null
+description = "X = ед, Y = проц"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_6f00o"]
+script = ExtResource("3_2xf5e")
+field_name = "bonus_stamina"
+field_type = 5
+default_value = null
+description = "X = ед, Y = проц"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_b4ojg"]
+script = ExtResource("3_2xf5e")
+field_name = "bonus_mana"
+field_type = 5
+default_value = null
+description = "X = ед, Y = проц"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_kwrq0"]
+script = ExtResource("3_2xf5e")
+field_name = "evasion"
+field_type = 5
+default_value = null
+description = "X = ед, Y = проц"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_81i5d"]
+script = ExtResource("3_2xf5e")
+field_name = "accuracy"
+field_type = 5
+default_value = null
+description = "X = ед, Y = проц"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_j6xjt"]
+script = ExtResource("3_2xf5e")
+field_name = "speed_bonus"
+field_type = 5
+default_value = null
+description = "X = ед, Y = проц"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_tcfst"]
+script = ExtResource("3_2xf5e")
+field_name = "stamina_cost_modifier"
+field_type = 1
+default_value = null
+description = "Модификатор стоимости стамины на удар (+ увеличивает, - уменьшает)"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_mxu0b"]
+script = ExtResource("3_2xf5e")
+field_name = "mana_cost_modifier"
+field_type = 1
+default_value = null
+description = "Модификатор стоимости маны на удар (+ увеличивает, - уменьшает)"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_7x1ml"]
+script = ExtResource("3_2xf5e")
+field_name = "crit_chance"
+field_type = 1
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_m0swo"]
+script = ExtResource("3_2xf5e")
+field_name = "crit_multiplier"
+field_type = 1
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_b6dxe"]
+script = ExtResource("3_2xf5e")
+field_name = "durability"
+field_type = 0
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_yy8hp"]
+script = ExtResource("3_2xf5e")
+field_name = "max_durability"
+field_type = 0
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_1ffyn"]
+script = ExtResource("3_2xf5e")
+field_name = "rune_slots"
+field_type = 0
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_45v6e"]
+script = ExtResource("3_2xf5e")
+field_name = "inserted_runes"
+field_type = 9
+default_value = null
+enum_values = PackedStringArray()
+array_element_type = 8
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_abhse"]
+script = ExtResource("4_tl7pu")
+schema_name = "EquipmentSchema"
+fields = Array[ExtResource("3_2xf5e")]([SubResource("Resource_8ulkf"), SubResource("Resource_ny1r6"), SubResource("Resource_wl14i"), SubResource("Resource_ehwfi"), SubResource("Resource_tlr58"), SubResource("Resource_xbb53"), SubResource("Resource_0g3h5"), SubResource("Resource_iguyh"), SubResource("Resource_ckysn"), SubResource("Resource_6fews"), SubResource("Resource_2aot3"), SubResource("Resource_vqoyv"), SubResource("Resource_23c87"), SubResource("Resource_6f00o"), SubResource("Resource_b4ojg"), SubResource("Resource_kwrq0"), SubResource("Resource_81i5d"), SubResource("Resource_j6xjt"), SubResource("Resource_tcfst"), SubResource("Resource_mxu0b"), SubResource("Resource_7x1ml"), SubResource("Resource_m0swo"), SubResource("Resource_b6dxe"), SubResource("Resource_yy8hp"), SubResource("Resource_1ffyn"), SubResource("Resource_45v6e")])
+
+[sub_resource type="Resource" id="Resource_wgfy7"]
+script = ExtResource("5_0xu6q")
+table_name = "Equipment"
+schema = SubResource("Resource_abhse")
+entries = Array[ExtResource("2_4k8vw")]([SubResource("Resource_4j4h4")])
+
+[sub_resource type="Resource" id="Resource_xfd3a"]
+script = ExtResource("2_4k8vw")
+entry_id = "items_0003"
+schema_name = "Items"
+data = {
+"cost_money": 0.0,
+"cost_value_points": 0.0,
+"item_type": 0,
+"max_stack": 1,
+"name": "",
+"quantity": 1,
+"rarity": 0,
+"size": Vector2(1, 1),
+"sprite_container": "",
+"sprite_mask_container": "",
+"sprite_mask_world": "",
+"sprite_world": "",
+"weight": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_l1uku"]
+script = ExtResource("3_2xf5e")
+field_name = "name"
+default_value = null
+description = "Локализованное название"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_ohjwu"]
+script = ExtResource("3_2xf5e")
+field_name = "sprite_container"
+field_type = 8
+default_value = null
+enum_values = PackedStringArray()
+resource_type_hint = "Texture2D"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_7m1pi"]
+script = ExtResource("3_2xf5e")
+field_name = "sprite_mask_container"
+field_type = 8
+default_value = null
+enum_values = PackedStringArray()
+resource_type_hint = "Texture2D"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_uajei"]
+script = ExtResource("3_2xf5e")
+field_name = "sprite_world"
+field_type = 8
+default_value = null
+enum_values = PackedStringArray()
+resource_type_hint = "Texture2D"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_1n1uf"]
+script = ExtResource("3_2xf5e")
+field_name = "sprite_mask_world"
+field_type = 8
+default_value = null
+enum_values = PackedStringArray()
+resource_type_hint = "Texture2D"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_lr1lg"]
+script = ExtResource("3_2xf5e")
+field_name = "quantity"
+field_type = 0
+default_value = 1
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_vhjk3"]
+script = ExtResource("3_2xf5e")
+field_name = "max_stack"
+field_type = 0
+default_value = 1
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_crc5k"]
+script = ExtResource("3_2xf5e")
+field_name = "size"
+field_type = 5
+default_value = Vector2(1, 1)
+description = "Размер в ячейках"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_xump4"]
+script = ExtResource("3_2xf5e")
+field_name = "item_type"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("EQUIPMENT", "CONSUMABLE", "MATERIAL", "QUEST", "JUNK", "AMMO", "KEY")
+enum_ref = "GlobalData/ItemType"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_xelep"]
+script = ExtResource("3_2xf5e")
+field_name = "rarity"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("COMMON", "UNCOMMON", "RARE", "EPIC", "LEGENDARY", "DIVINE", "UNIQUE")
+enum_ref = "GlobalData/Rarity"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_6luu0"]
+script = ExtResource("3_2xf5e")
+field_name = "cost_money"
+field_type = 1
+default_value = 0.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_gcrrj"]
+script = ExtResource("3_2xf5e")
+field_name = "cost_value_points"
+field_type = 1
+default_value = 0.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_abks8"]
+script = ExtResource("3_2xf5e")
+field_name = "weight"
+field_type = 1
+default_value = 0.0
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_m78my"]
+script = ExtResource("4_tl7pu")
+schema_name = "Items"
+fields = Array[ExtResource("3_2xf5e")]([SubResource("Resource_l1uku"), SubResource("Resource_ohjwu"), SubResource("Resource_7m1pi"), SubResource("Resource_uajei"), SubResource("Resource_1n1uf"), SubResource("Resource_lr1lg"), SubResource("Resource_vhjk3"), SubResource("Resource_crc5k"), SubResource("Resource_xump4"), SubResource("Resource_xelep"), SubResource("Resource_6luu0"), SubResource("Resource_gcrrj"), SubResource("Resource_abks8")])
+
+[sub_resource type="Resource" id="Resource_emg7w"]
+script = ExtResource("5_0xu6q")
+table_name = "Items"
+schema = SubResource("Resource_m78my")
+entries = Array[ExtResource("2_4k8vw")]([SubResource("Resource_xfd3a")])
+
+[sub_resource type="Resource" id="Resource_mfg2h"]
+script = ExtResource("3_2xf5e")
+field_name = "name"
+default_value = null
+description = "Название профиля"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_lfuxe"]
+script = ExtResource("3_2xf5e")
+field_name = "level_range"
+field_type = 5
+default_value = null
+description = "мин/макс уровень"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_ee7i5"]
+script = ExtResource("3_2xf5e")
+field_name = "rarity_weights"
+field_type = 11
+default_value = null
+description = "веса редкостей (COMMON=10, RARE=2, …)"
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 1
+dict_key_enum_values = PackedStringArray("COMMON", "UNCOMMON", "RARE", "EPIC", "LEGENDARY", "DIVINE", "UNIQUE")
+dict_key_enum_ref = "GlobalData/Rarity"
+
+[sub_resource type="Resource" id="Resource_u666k"]
+script = ExtResource("3_2xf5e")
+field_name = "rarity_power"
+field_type = 11
+default_value = null
+description = "множитель силы за редкость (COMMON=1.0, EPIC=1.6, …)"
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 1
+dict_key_enum_values = PackedStringArray("COMMON", "UNCOMMON", "RARE", "EPIC", "LEGENDARY", "DIVINE", "UNIQUE")
+dict_key_enum_ref = "GlobalData/Rarity"
+
+[sub_resource type="Resource" id="Resource_tjaie"]
+script = ExtResource("3_2xf5e")
+field_name = "damage_spread"
+field_type = 5
+default_value = null
+description = "множитель урона, напр. (0.85, 1.2)"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_0344p"]
+script = ExtResource("3_2xf5e")
+field_name = "attr_bonus_count"
+field_type = 5
+default_value = null
+description = "сколько случайных атрибутов бафнуть (0, 2)"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_dwckv"]
+script = ExtResource("3_2xf5e")
+field_name = "attr_bonus_value"
+field_type = 5
+default_value = null
+description = "диапазон значения бонуса на атрибут"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_ljkqq"]
+script = ExtResource("3_2xf5e")
+field_name = "spec_bonus_count"
+field_type = 5
+default_value = null
+description = "сколько случайных специализаций"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_0w36u"]
+script = ExtResource("3_2xf5e")
+field_name = "spec_bonus_value"
+field_type = 5
+default_value = null
+description = "диапазон бонуса специализации"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_rlmpe"]
+script = ExtResource("3_2xf5e")
+field_name = "guaranteed_attrs"
+field_type = 11
+default_value = null
+description = "гарантированные атрибуты: ключ = какой, значение = (min, max) ролла"
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 5
+dict_key_enum_values = PackedStringArray("STRENGTH", "DEXTERITY", "BODY", "INTELLIGENCE", "PERCEPTION")
+dict_key_enum_ref = "GlobalData/Attribute"
+
+[sub_resource type="Resource" id="Resource_8bx5v"]
+script = ExtResource("3_2xf5e")
+field_name = "guaranteed_specs"
+field_type = 11
+default_value = null
+description = "гарантированные специализации: ключ = какой, значение = (min, max) ролла"
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 5
+dict_key_enum_values = PackedStringArray("WARFARE", "ASSASSIN", "RANGED_COMBAT", "SORCERY", "ALCHEMY", "SURVIVAL")
+dict_key_enum_ref = "GlobalData/Specialization"
+
+[sub_resource type="Resource" id="Resource_nri3s"]
+script = ExtResource("3_2xf5e")
+field_name = "req_per_level"
+field_type = 1
+default_value = null
+description = "требование к атрибуту = level × это число"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_qht06"]
+script = ExtResource("3_2xf5e")
+field_name = "durability_range"
+field_type = 5
+default_value = null
+description = "мин/макс прочность"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_8id8f"]
+script = ExtResource("3_2xf5e")
+field_name = "cost_spread"
+field_type = 5
+default_value = null
+description = "множитель цены, напр. (0.9, 1.1)"
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_5bcth"]
+script = ExtResource("4_tl7pu")
+schema_name = "RandomProfilesSchema"
+fields = Array[ExtResource("3_2xf5e")]([SubResource("Resource_mfg2h"), SubResource("Resource_lfuxe"), SubResource("Resource_ee7i5"), SubResource("Resource_u666k"), SubResource("Resource_tjaie"), SubResource("Resource_0344p"), SubResource("Resource_dwckv"), SubResource("Resource_ljkqq"), SubResource("Resource_0w36u"), SubResource("Resource_rlmpe"), SubResource("Resource_8bx5v"), SubResource("Resource_nri3s"), SubResource("Resource_qht06"), SubResource("Resource_8id8f")])
+
+[sub_resource type="Resource" id="Resource_cvslw"]
+script = ExtResource("5_0xu6q")
+table_name = "RandomProfiles"
+schema = SubResource("Resource_5bcth")
+
+[sub_resource type="Resource" id="Resource_xamur"]
+script = ExtResource("2_4k8vw")
+entry_id = "weapons_0001"
+schema_name = "WeaponsSchema"
+data = {
+"attack_activation": 1,
+"attack_speed": 1.0,
+"damage_table": {
+0: 5.0
+},
+"equipment_data": {
+"accuracy": Vector2(0, 0),
+"attribute_bonuses": {},
+"bonus_attack_speed": 0.0,
+"bonus_health": Vector2(0, 0),
+"bonus_mana": Vector2(0, 0),
+"bonus_stamina": Vector2(0, 0),
+"crit_chance": 0.0,
+"crit_multiplier": 0.0,
+"damage_bonuses": {},
+"durability": 0,
+"equipment_category": 16,
+"evasion": Vector2(0, 0),
+"global_damage_percent": 0.0,
+"inserted_runes": [],
+"item_data": {
+"cost_money": 0.0,
+"cost_value_points": 0.0,
+"item_type": 0,
+"max_stack": 1,
+"name": "",
+"quantity": 1,
+"rarity": 0,
+"size": Vector2(2, 3),
+"sprite_container": "res://sprites/items/weapons/sword_inventory_test.png",
+"sprite_mask_container": "",
+"sprite_mask_world": "",
+"sprite_world": "res://sprites/items/weapons/sword_test.png",
+"weight": 3.0
+},
+"level": 1,
+"mana_cost_modifier": 0.0,
+"max_durability": 0,
+"random_profile": "",
+"requirements": {},
+"resistances": {},
+"rune_slots": 0,
+"specialization_bonuses": {},
+"speed_bonus": Vector2(0, 0),
+"stamina_cost_modifier": 0.0,
+"valid_equip_slots": [13, 14]
+},
+"grip": 0,
+"mana_cost": 0.0,
+"melee_range": 1,
+"random_profile": "",
+"ranged_distance": 0,
+"stamina_cost": 0.0,
+"weapon_range": 0,
+"weapon_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_ma2yv"]
+script = ExtResource("3_2xf5e")
+field_name = "equipment_data"
+field_type = 10
+default_value = null
+enum_values = PackedStringArray()
+nested_schema_name = "Equipment"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_2o55x"]
+script = ExtResource("3_2xf5e")
+ref_table_name = "RandomProfiles"
+field_name = "random_profile"
+field_type = 12
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_e3f8s"]
+script = ExtResource("3_2xf5e")
+field_name = "weapon_type"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("SWORD", "AXE", "MACE", "DAGGER", "SPEAR", "BOW", "CROSSBOW", "STAFF", "WAND")
+enum_ref = "GlobalData/WeaponType"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_8nvi5"]
+script = ExtResource("3_2xf5e")
+field_name = "grip"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("ONE_HANDED", "TWO_HANDED")
+enum_ref = "GlobalData/WeaponGrip"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_rjuyv"]
+script = ExtResource("3_2xf5e")
+field_name = "weapon_range"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("MELEE", "RANGED")
+enum_ref = "GlobalData/WeaponRange"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_8nj03"]
+script = ExtResource("3_2xf5e")
+field_name = "attack_activation"
+field_type = 4
+default_value = null
+enum_values = PackedStringArray("PROJECTILE", "INSTANT", "PROJECTILE_AOE", "INSTANT_AOE")
+enum_ref = "GlobalData/AttackActivation"
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_gjiss"]
+script = ExtResource("3_2xf5e")
+field_name = "damage_table"
+field_type = 11
+default_value = null
+enum_values = PackedStringArray()
+dict_key_type = 4
+dict_value_type = 1
+dict_key_enum_values = PackedStringArray("SLASH", "SLICE", "PIERCE", "BLUNT", "FIRE", "COLD", "POISON", "LIGHTNING", "HOLY", "DARK")
+dict_key_enum_ref = "GlobalData/DamageTypes"
+
+[sub_resource type="Resource" id="Resource_wwodb"]
+script = ExtResource("3_2xf5e")
+field_name = "attack_speed"
+field_type = 0
+default_value = 1
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_ecvej"]
+script = ExtResource("3_2xf5e")
+field_name = "melee_range"
+field_type = 0
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_h7ik2"]
+script = ExtResource("3_2xf5e")
+field_name = "ranged_distance"
+field_type = 0
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_mwepg"]
+script = ExtResource("3_2xf5e")
+field_name = "stamina_cost"
+field_type = 1
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_3olka"]
+script = ExtResource("3_2xf5e")
+field_name = "mana_cost"
+field_type = 1
+default_value = null
+enum_values = PackedStringArray()
+dict_key_enum_values = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_ml1el"]
+script = ExtResource("4_tl7pu")
+schema_name = "WeaponsSchema"
+fields = Array[ExtResource("3_2xf5e")]([SubResource("Resource_ma2yv"), SubResource("Resource_2o55x"), SubResource("Resource_e3f8s"), SubResource("Resource_8nvi5"), SubResource("Resource_rjuyv"), SubResource("Resource_8nj03"), SubResource("Resource_gjiss"), SubResource("Resource_wwodb"), SubResource("Resource_ecvej"), SubResource("Resource_h7ik2"), SubResource("Resource_mwepg"), SubResource("Resource_3olka")])
+
+[sub_resource type="Resource" id="Resource_rtav2"]
+script = ExtResource("5_0xu6q")
+table_name = "Weapons"
+schema = SubResource("Resource_ml1el")
+entries = Array[ExtResource("2_4k8vw")]([SubResource("Resource_xamur")])
+
+[resource]
+script = ExtResource("1_50t21")
+database_name = "GlobalDatabase"
+tables = {
+"CharacterStats": SubResource("Resource_l34t4"),
+"Consumables": SubResource("Resource_bvut8"),
+"Containers": SubResource("Resource_hjwwe"),
+"Enums": SubResource("Resource_a8iyq"),
+"Equipment": SubResource("Resource_wgfy7"),
+"Items": SubResource("Resource_emg7w"),
+"RandomProfiles": SubResource("Resource_cvslw"),
+"Weapons": SubResource("Resource_rtav2")
+}

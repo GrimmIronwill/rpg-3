@@ -1,0 +1,230 @@
+[gd_scene format=3 uid="uid://c5o7hhmxqvtng"]
+
+[ext_resource type="Script" uid="uid://hp1otppqkn6p" path="res://scripts/ui/menu/main_menu.gd" id="1_hj162"]
+[ext_resource type="Texture2D" uid="uid://blvkjci4hophg" path="res://sprites/ui/custom_buttons/BaseButton.png" id="1_kiqgm"]
+[ext_resource type="Script" uid="uid://ec355rvtquee" path="res://scripts/ui/custom_buttons/nine_patch_button.gd" id="1_nl8w3"]
+[ext_resource type="Texture2D" uid="uid://b7nwvjifmcfde" path="res://sprites/ui/main_menu/Background.png" id="2_xn6kt"]
+[ext_resource type="Texture2D" uid="uid://ub7tie26rm4j" path="res://sprites/ui/custom_buttons/HoverButton.png" id="3_hj162"]
+[ext_resource type="Texture2D" uid="uid://covq77ktj73g0" path="res://sprites/ui/custom_buttons/PressedButton.png" id="4_xn6kt"]
+
+[node name="Menu" type="Control" unique_id=2036814595 node_paths=PackedStringArray("ProfileCounter", "ProfileAddButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hj162")
+ProfileCounter = NodePath("MarginContainer/HBoxContainer/Profiles/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer")
+ProfileAddButton = NodePath("MarginContainer/HBoxContainer/Profiles/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/Add")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2126989993]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_xn6kt")
+expand_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1946643040]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1290830282]
+layout_mode = 2
+
+[node name="Buttons" type="MarginContainer" parent="MarginContainer/HBoxContainer" unique_id=1011508129]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Buttons" unique_id=191727745]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Continue" type="NinePatchRect" parent="MarginContainer/HBoxContainer/Buttons/VBoxContainer" unique_id=259219531]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 0
+texture = ExtResource("1_kiqgm")
+patch_margin_left = 23
+patch_margin_top = 9
+patch_margin_right = 23
+patch_margin_bottom = 9
+script = ExtResource("1_nl8w3")
+BaseTexture = ExtResource("1_kiqgm")
+HoverTexture = ExtResource("3_hj162")
+PressedTexture = ExtResource("4_xn6kt")
+text = "Продолжить"
+metadata/_custom_type_script = "uid://ec355rvtquee"
+
+[node name="New" type="NinePatchRect" parent="MarginContainer/HBoxContainer/Buttons/VBoxContainer" unique_id=1921590113]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 0
+texture = ExtResource("1_kiqgm")
+patch_margin_left = 23
+patch_margin_top = 9
+patch_margin_right = 23
+patch_margin_bottom = 9
+script = ExtResource("1_nl8w3")
+BaseTexture = ExtResource("1_kiqgm")
+HoverTexture = ExtResource("3_hj162")
+PressedTexture = ExtResource("4_xn6kt")
+text = "Новая Игра"
+metadata/_custom_type_script = "uid://ec355rvtquee"
+
+[node name="Load" type="NinePatchRect" parent="MarginContainer/HBoxContainer/Buttons/VBoxContainer" unique_id=2016278616]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 0
+texture = ExtResource("1_kiqgm")
+patch_margin_left = 23
+patch_margin_top = 9
+patch_margin_right = 23
+patch_margin_bottom = 9
+script = ExtResource("1_nl8w3")
+BaseTexture = ExtResource("1_kiqgm")
+HoverTexture = ExtResource("3_hj162")
+PressedTexture = ExtResource("4_xn6kt")
+text = "Загрузить"
+metadata/_custom_type_script = "uid://ec355rvtquee"
+
+[node name="Settings" type="NinePatchRect" parent="MarginContainer/HBoxContainer/Buttons/VBoxContainer" unique_id=239383043]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 0
+texture = ExtResource("1_kiqgm")
+patch_margin_left = 23
+patch_margin_top = 9
+patch_margin_right = 23
+patch_margin_bottom = 9
+script = ExtResource("1_nl8w3")
+BaseTexture = ExtResource("1_kiqgm")
+HoverTexture = ExtResource("3_hj162")
+PressedTexture = ExtResource("4_xn6kt")
+text = "Настройки"
+metadata/_custom_type_script = "uid://ec355rvtquee"
+
+[node name="Exit" type="NinePatchRect" parent="MarginContainer/HBoxContainer/Buttons/VBoxContainer" unique_id=830514502]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 0
+texture = ExtResource("1_kiqgm")
+patch_margin_left = 23
+patch_margin_top = 9
+patch_margin_right = 23
+patch_margin_bottom = 9
+script = ExtResource("1_nl8w3")
+BaseTexture = ExtResource("1_kiqgm")
+HoverTexture = ExtResource("3_hj162")
+PressedTexture = ExtResource("4_xn6kt")
+text = "Выход"
+metadata/_custom_type_script = "uid://ec355rvtquee"
+
+[node name="Settings" type="MarginContainer" parent="MarginContainer/HBoxContainer" unique_id=44193768]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer/Settings" unique_id=820200305]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Settings/Panel" unique_id=1571382546]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Folders" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Settings/Panel/MarginContainer" unique_id=262399512]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 0
+alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/Settings/Panel/MarginContainer" unique_id=2011369213]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Settings/Panel/MarginContainer/ScrollContainer" unique_id=579717089]
+layout_mode = 2
+
+[node name="Profiles" type="MarginContainer" parent="MarginContainer/HBoxContainer" unique_id=364261290]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Profiles" unique_id=1310047833]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/Profiles/VBoxContainer" unique_id=11997214]
+custom_minimum_size = Vector2(0, 360)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Profiles/VBoxContainer/PanelContainer" unique_id=749219618]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Profiles/VBoxContainer/PanelContainer/MarginContainer" unique_id=769510]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Profiles/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=192330851]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Профили"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/Profiles/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=2072703539]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Profiles/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer" unique_id=508316311]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Profiles/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/MarginContainer" unique_id=1166201873]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Add" type="Button" parent="MarginContainer/HBoxContainer/Profiles/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=773286705]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Добавить"
+
+[connection signal="button_pressed" from="MarginContainer/HBoxContainer/Buttons/VBoxContainer/Exit" to="." method="_exit"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/Profiles/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/Add" to="." method="_on_add_pressed"]

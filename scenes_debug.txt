@@ -1,0 +1,100 @@
+============================================================
+demo\demo_level.tscn
+============================================================
+DemoLevel [Node2D]
+  |- WorldBuilder [Node]
+  |- TileMapLayer [TileMapLayer]
+  |- MapCamera2D [Camera2D]
+  |- CharacterHolder [Node]
+    |- AI [Node]
+    |- Players [Node]
+      |- Player
+    |- Items [Node]
+    |- Containers [Node]
+      |- Chest [StaticBody2D]
+        |- MainCollision [CollisionShape2D]
+        |- Sprite [Sprite2D]
+
+
+============================================================
+inventory\inventory.tscn
+============================================================
+InventoryUI [MarginContainer]
+
+
+============================================================
+menu\main_menu.tscn
+============================================================
+Menu [Control]
+  |- TextureRect [TextureRect]
+  |- MarginContainer [MarginContainer]
+    |- HBoxContainer [HBoxContainer]
+      |- Buttons [MarginContainer]
+        |- VBoxContainer [VBoxContainer]
+          |- Continue [NinePatchRect]
+          |- New [NinePatchRect]
+          |- Load [NinePatchRect]
+          |- Settings [NinePatchRect]
+          |- Exit [NinePatchRect]
+      |- Settings [MarginContainer]
+        |- Panel [Panel]
+          |- MarginContainer [MarginContainer]
+            |- Folders [HBoxContainer]
+            |- ScrollContainer [ScrollContainer]
+              |- VBoxContainer [VBoxContainer]
+      |- Profiles [MarginContainer]
+        |- VBoxContainer [VBoxContainer]
+          |- PanelContainer [PanelContainer]
+            |- MarginContainer [MarginContainer]
+              |- VBoxContainer [VBoxContainer]
+                |- Label [Label]
+                |- ScrollContainer [ScrollContainer]
+                  |- MarginContainer [MarginContainer]
+                    |- VBoxContainer [VBoxContainer]
+                      |- Add [Button]
+
+  Signals:
+    > MarginContainer/HBoxContainer/Buttons/VBoxContainer/Exit.button_pressed -> .._exit
+    > MarginContainer/HBoxContainer/Profiles/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/Add.pressed -> .._on_add_pressed
+
+
+============================================================
+player\player.tscn
+============================================================
+Player [CharacterBody2D]
+  |- MainCollision [CollisionShape2D]
+  |- Sprite [Sprite2D]
+  |- PlayerEquipment [Node]
+  |- PlayerAttack [Node]
+  |- PlayerInventory [Node]
+  |- PlayerInteraction [Node]
+  |- CanvasLayer [CanvasLayer]
+    |- Control [Control]
+      |- InvPanel [PanelContainer]
+        |- MarginContainer [MarginContainer]
+          |- InventoryUI [MarginContainer]
+      |- Doll [PanelContainer]
+        |- MarginContainer [MarginContainer]
+          |- EquipmentDollUI [Control]
+            |- Slot_HEAD_PRIMARY [Control]
+            |- Slot_HEAD_SECONDARY [Control]
+            |- Slot_AMULET [Control]
+            |- Slot_TORSO_PRIMARY [Control]
+            |- Slot_TORSO_SECONDARY [Control]
+            |- Slot_BACK [Control]
+            |- Slot_HAND_1 [Control]
+            |- Slot_ARMS [Control]
+            |- Slot_BODY_SLOT_1 [Control]
+            |- Slot_BODY_SLOT_2 [Control]
+            |- Slot_GLOVES [Control]
+            |- Slot_HAND_2 [Control]
+            |- Slot_RING_1 [Control]
+            |- Slot_RING_2 [Control]
+            |- Slot_BELT [Control]
+            |- Slot_LEGS_PRIMARY [Control]
+            |- Slot_RING_3 [Control]
+            |- Slot_RING_4 [Control]
+            |- Slot_POCKET_1 [Control]
+            |- Slot_LEGS_SECONDARY [Control]
+            |- Slot_FEET [Control]
+            |- Slot_POCKET_2 [Control]
