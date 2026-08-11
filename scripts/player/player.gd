@@ -14,6 +14,10 @@ extends Character
 ## Грейс на первый шаг: успеть зажать вторую клавишу для диагонали.
 const KB_FIRST_STEP_DELAY := 0.06
 
+@export var AP_UI : CustomProgressBar
+@export var HP_UI : CustomProgressBar
+@export var MP_UI : CustomProgressBar
+@export var ST_UI : CustomProgressBar
 @export var equipment : PlayerEquipment
 @export var attack_node : PlayerAttack
 
@@ -52,11 +56,41 @@ func _ready() -> void:
 	_path_preview.player = self
 	add_child(_path_preview)
 	_update_debug_draw()
+	set_UI()
 
 func _on_died(_attacker: Node2D) -> void:
 	_planned_path = PackedVector2Array()
 	if _turn_active:
 		end_turn()
+
+func set_UI():
+	AP_UI.min_value = 0
+	AP_UI.max_value = ACTIONS_PER_TURN
+
+	HP_UI.min_value = 0
+	MP_UI.min_value = 0
+	ST_UI.min_value = 0
+
+	if !Stats:
+		return
+
+	HP_UI.max_value = Stats.health.y
+	MP_UI.max_value = Stats.mana.y
+	ST_UI.max_value = Stats.stamina.y
+
+	HP_UI.value = Stats.health.x
+	MP_UI.value = Stats.mana.x
+	ST_UI.value = Stats.stamina.x
+
+func update_UI():
+	AP_UI.value = action_points
+
+	if !Stats:
+		return
+
+	HP_UI.value = Stats.health.x
+	MP_UI.value = Stats.mana.x
+	ST_UI.value = Stats.stamina.x
 
 ## ═══════════ ХОД ИГРОКА ═══════════
 
@@ -78,6 +112,7 @@ func get_planned_path() -> PackedVector2Array:
 	return _planned_path
 
 func _process(delta: float) -> void:
+	update_UI()
 	if Engine.is_editor_hint(): return
 	if not _turn_active or _busy or is_moving(): return
 
@@ -267,3 +302,10 @@ func _update_debug_draw() -> void:
 	elif not debug_draw and _debug_node:
 		_debug_node.queue_free()
 		_debug_node = null
+
+func current_weapon() -> ItemWeapon:
+	if equipment:
+		var equipped := equipment.current_weapon()
+		if equipped:
+			return equipped
+	return super()

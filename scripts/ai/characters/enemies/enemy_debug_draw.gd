@@ -74,5 +74,5 @@ func _draw() -> void:
 
 	# --- Стейт + очки действий ---
 	draw_string(ThemeDB.fallback_font, Vector2(-30, -24),
-		"%s  ОД:%d" % [enemy.state_name(), enemy.action_points],
-		HORIZONTAL_ALIGNMENT_CENTER, 60, 10, Color.WHITE)
+		"%s  ОД:%d ХП:%f" % [enemy.state_name(), enemy.action_points, enemy.Stats.health.x if enemy.Stats else enemy._hp],
+		HORIZONTAL_ALIGNMENT_CENTER, 120, 10, Color.WHITE)

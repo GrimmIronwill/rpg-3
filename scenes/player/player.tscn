@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ctqskgr156tuo" path="res://scripts/player/player.gd" id="1_8afob"]
 [ext_resource type="Texture2D" uid="uid://bg5uyk6npe5u0" path="res://sprites/characters/debug.png" id="2_dovo2"]
+[ext_resource type="Script" uid="uid://bh2mged47vv0b" path="res://scripts/resources/characters/character_stats.gd" id="2_h17s1"]
 [ext_resource type="Script" uid="uid://bpcwbjdgx6uvg" path="res://scripts/player/player_equipment.gd" id="3_0owmy"]
 [ext_resource type="Script" uid="uid://dcohkf6npl5j6" path="res://scripts/ui/inventory/player_inventory.gd" id="3_lvxji"]
 [ext_resource type="Script" uid="uid://xq4v688klto5" path="res://scripts/ui/inventory/inventory_ui.gd" id="4_p47bc"]
@@ -9,16 +10,32 @@
 [ext_resource type="Script" uid="uid://c5hksm4jcmvhx" path="res://scripts/ui/inventory/equipment_doll_ui.gd" id="5_p47bc"]
 [ext_resource type="Script" uid="uid://cboo6er1vm7s" path="res://scripts/player/player_interaction.gd" id="6_5gtgg"]
 [ext_resource type="Script" uid="uid://b54tp5j3ue14" path="res://scripts/ui/inventory/equipment_slot_ui.gd" id="8_qek5x"]
+[ext_resource type="Script" uid="uid://bvjshogjc7a74" path="res://scripts/ui/custom_buttons/custom_progress_bar.gd" id="11_je7p5"]
+
+[sub_resource type="Resource" id="Resource_5gtgg"]
+script = ExtResource("2_h17s1")
+health = Vector2(300, 300)
+health_regen = Vector2(5, 5)
+stamina = Vector2(300, 300)
+stamina_regen = Vector2(5, 5)
+mana = Vector2(300, 300)
+mana_regen = Vector2(5, 5)
+metadata/_custom_type_script = "uid://bh2mged47vv0b"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lvxji"]
 radius = 16.0
 
-[node name="Player" type="CharacterBody2D" unique_id=2004850523 node_paths=PackedStringArray("equipment", "attack_node") groups=["player"]]
+[node name="Player" type="CharacterBody2D" unique_id=2004850523 node_paths=PackedStringArray("AP_UI", "HP_UI", "MP_UI", "ST_UI", "equipment", "attack_node") groups=["player"]]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_8afob")
+AP_UI = NodePath("CanvasLayer/Control/Stats/MarginContainer/VBoxContainer/ActionPoints")
+HP_UI = NodePath("CanvasLayer/Control/Stats/MarginContainer/VBoxContainer/HP")
+MP_UI = NodePath("CanvasLayer/Control/Stats/MarginContainer/VBoxContainer/HBoxContainer/Mana")
+ST_UI = NodePath("CanvasLayer/Control/Stats/MarginContainer/VBoxContainer/HBoxContainer/Stamina")
 equipment = NodePath("PlayerEquipment")
 attack_node = NodePath("PlayerAttack")
+Stats = SubResource("Resource_5gtgg")
 metadata/_custom_type_script = "uid://ctqskgr156tuo"
 
 [node name="MainCollision" type="CollisionShape2D" parent="." unique_id=220354387]
@@ -345,3 +362,65 @@ offset_bottom = 238.0
 tooltip_text = "POCKET_2"
 script = ExtResource("8_qek5x")
 slot_id = 21
+
+[node name="Stats" type="PanelContainer" parent="CanvasLayer/Control" unique_id=1899898615]
+custom_minimum_size = Vector2(330, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -40.0
+offset_right = 160.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Stats" unique_id=1856443315]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Stats/MarginContainer" unique_id=621423442]
+layout_mode = 2
+
+[node name="ActionPoints" type="ProgressBar" parent="CanvasLayer/Control/Stats/MarginContainer/VBoxContainer" unique_id=117813263]
+custom_minimum_size = Vector2(89, 23)
+layout_mode = 2
+max_value = 3.0
+show_percentage = false
+script = ExtResource("11_je7p5")
+text_format = "{0} / {2} OD"
+metadata/_custom_type_script = "uid://bvjshogjc7a74"
+
+[node name="HP" type="ProgressBar" parent="CanvasLayer/Control/Stats/MarginContainer/VBoxContainer" unique_id=148365902]
+custom_minimum_size = Vector2(97, 23)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+script = ExtResource("11_je7p5")
+metadata/_custom_type_script = "uid://bvjshogjc7a74"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Stats/MarginContainer/VBoxContainer" unique_id=578685424]
+layout_mode = 2
+
+[node name="Mana" type="ProgressBar" parent="CanvasLayer/Control/Stats/MarginContainer/VBoxContainer/HBoxContainer" unique_id=185677553]
+custom_minimum_size = Vector2(97, 23)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 100.0
+show_percentage = false
+script = ExtResource("11_je7p5")
+metadata/_custom_type_script = "uid://bvjshogjc7a74"
+
+[node name="Stamina" type="ProgressBar" parent="CanvasLayer/Control/Stats/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1767111987]
+custom_minimum_size = Vector2(97, 23)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 100.0
+show_percentage = false
+script = ExtResource("11_je7p5")
+metadata/_custom_type_script = "uid://bvjshogjc7a74"

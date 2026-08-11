@@ -17,7 +17,9 @@ func _process(delta: float) -> void:
 ## ═══════════ ПАРАМЕТРЫ ═══════════
 
 func weapon() -> ItemWeapon:
-	return player.current_weapon() if player else null
+	if player == null:
+		return null
+	return player.current_weapon()
 
 func is_ranged() -> bool:
 	var w := weapon()
@@ -41,28 +43,31 @@ func attack(t: Node2D) -> bool:
 	return true
 
 func _damage_table() -> Dictionary:
-	var w := weapon()
-	var table := {}
-	if w and not w.damage_table.is_empty():
-		for t in w.damage_table:
-			table[t] = float(w.damage_table[t])
+	var table: Dictionary = {}
+	var current := weapon()
+
+	if current != null and not current.damage_table.is_empty():
+		for damage_type in current.damage_table:
+			table[int(damage_type)] = float(current.damage_table[damage_type])
 	else:
 		table[GameEnums.DamageTypes.BLUNT] = player.unarmed_damage
 
 	if player.equipment:
 		table = player.equipment.modify_damage_table(table)
 
-	# Крит
 	var chance := 0.0
-	var mult := 1.5
+	var multiplier := 1.5
+
 	if player.equipment:
-		var cp = player.equipment.crit_params()
-		chance = cp.x
-		mult = cp.y
-	elif w:
-		chance = w.crit_chance
-		mult = maxf(w.crit_multiplier, 1.0)
+		var crit := player.equipment.crit_params()
+		chance = crit.x
+		multiplier = maxf(crit.y, 1.0)
+	elif current:
+		chance = current.crit_chance
+		multiplier = maxf(current.crit_multiplier, 1.0)
+
 	if chance > 0.0 and randf() * 100.0 < chance:
-		for t in table:
-			table[t] = float(table[t]) * mult
+		for damage_type in table:
+			table[damage_type] = float(table[damage_type]) * multiplier
+
 	return table

@@ -35,26 +35,63 @@ func fill_from_dict(data: Dictionary) -> void:
 
 ## Строка-путь -> Resource, если свойство ожидает объект (Texture2D и т.п.)
 func _convert_value(prop: Dictionary, value: Variant) -> Variant:
+	# Строка-путь -> Resource, если свойство ожидает объект.
 	if prop.type == TYPE_OBJECT and value is String:
 		if value.is_empty():
 			return null
+
 		if ResourceLoader.exists(value):
-			return load(value)
-		push_warning("Ресурс не найден: %s (поле %s)" % [value, prop.name])
+			return ResourceLoader.load(value)
+
+		push_warning(
+			"Ресурс не найден: %s (поле %s)"
+			% [value, prop.name]
+		)
 		return null
 
-	# Массив из БД -> типизированный массив свойства
+	# Обычный Array из БД -> типизированный Array свойства.
 	if prop.type == TYPE_ARRAY and value is Array:
 		var current: Variant = get(prop.name)
+
 		if current is Array and current.is_typed():
-			var arr: Array = current.duplicate()
-			arr.clear()
-			for v in value:
-				arr.append(v)
-			return arr
+			var typed_array: Array = current.duplicate(true)
+			typed_array.clear()
+			typed_array.assign(value)
+			return typed_array
+
+		return value.duplicate(true)
+
+	# Обычный Dictionary из БД -> типизированный Dictionary свойства.
+	if prop.type == TYPE_DICTIONARY and value is Dictionary:
+		return _convert_dictionary_property(prop.name, value)
 
 	return value
 
+func _convert_dictionary_property(
+	property_name: StringName,
+	source: Dictionary
+) -> Dictionary:
+	var current: Variant = get(property_name)
+
+	# Если свойство почему-либо не содержит Dictionary,
+	# возвращаем хотя бы независимую копию исходных данных.
+	if not (current is Dictionary):
+		return source.duplicate(true)
+
+	# duplicate() сохраняет информацию о типах Dictionary[K, V].
+	var result: Dictionary = current.duplicate(true)
+	result.clear()
+
+	if result.is_typed():
+		# assign() переносит данные в типизированный словарь и приводит
+		# ключи/значения к его типам, например:
+		# Dictionary[int, float],
+		# Dictionary[int, Vector2].
+		result.assign(source)
+	else:
+		result = source.duplicate(true)
+
+	return result
 
 func get_all_variables(debug : bool = true) -> Array[String]:
 	var arr : Array[String]

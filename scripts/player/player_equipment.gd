@@ -39,6 +39,14 @@ var character : Character
 
 func _ready() -> void:
 	character = get_parent() as Character
+	_apply_all()
+
+func current_weapon() -> ItemWeapon:
+	for slot_id in [ES.HAND_1, ES.HAND_2]:
+		var item = slots.get(slot_id)
+		if item is ItemWeapon:
+			return item as ItemWeapon
+	return null
 
 func get_item(slot: int) -> Item:
 	return slots.get(slot)
