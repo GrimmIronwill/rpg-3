@@ -73,47 +73,105 @@ func state_name() -> String:
 func take_turn() -> void:
 	if not is_alive():
 		return
+
 	start_turn()
 	_perceive()
-	_tick_state()
 
-	var guard := 12   # защита от зацикливания
+	# Состояние фиксируется после первичного восприятия.
+	# Если враг сменит состояние посреди хода, счётчик нового состояния
+	# начнёт уменьшаться только со следующего хода.
+	var state_at_turn_start := state
+
+	var guard := 12
 	while is_alive() and action_points > 0 and guard > 0:
 		guard -= 1
-		var acted : bool = await _take_action()
+
+		var acted: bool = await _take_action()
 		if not acted:
 			break
+
 		_perceive()
-		# Пауза для читаемости — только у АКТИВНЫХ (видимых) врагов.
+
 		if not instant_turn and is_inside_tree():
 			await get_tree().create_timer(ACT_DELAY).timeout
 
+	_tick_state(state_at_turn_start)
 	end_turn()
 
 ## Счётчики состояний тикают один раз за ход.
-func _tick_state() -> void:
+func _tick_state(state_at_turn_start: AIState) -> void:
+	# Не уменьшаем таймер состояния, в которое враг вошёл посреди хода.
+	if state != state_at_turn_start:
+		return
+
 	match state:
 		AIState.AGGRO:
-			if not _can_see:
-				_memory -= 1
+			if _can_see:
+				_memory = maxi(memory_turns, 1)
+			else:
+				_memory = maxi(_memory - 1, 0)
 				if _memory <= 0:
 					_enter_search()
+
 		AIState.SEARCH:
-			_search_left -= 1
+			_search_left = maxi(_search_left - 1, 0)
 			if _search_left <= 0:
-				state = AIState.IDLE
+				_enter_idle()
+
 		AIState.ALERT:
-			_alert_left -= 1
+			_alert_left = maxi(_alert_left - 1, 0)
 			if _alert_left <= 0:
-				state = AIState.IDLE
+				last_known_pos = alert_pos
+				last_known_dir = Vector2.ZERO
+				_enter_search()
+
+func _enter_idle() -> void:
+	state = AIState.IDLE
+	target = null
+	_can_see = false
+	_memory = 0
+	_search_left = 0
+	_alert_left = 0
+	_search_pos = Vector2.ZERO
+	_debug_path = PackedVector2Array()
+
+func _enter_aggro(
+	new_target: Node2D,
+	known_pos: Vector2,
+	known_dir: Vector2 = Vector2.ZERO
+) -> void:
+	if new_target == null or not is_instance_valid(new_target):
+		return
+
+	state = AIState.AGGRO
+	target = new_target
+	last_known_pos = known_pos
+	last_known_dir = known_dir.normalized() \
+		if known_dir.length_squared() > 0.001 \
+		else Vector2.ZERO
+
+	_memory = maxi(memory_turns, 1)
+	_search_left = 0
+	_alert_left = 0
+	_search_pos = Vector2.ZERO
 
 func _enter_search() -> void:
 	state = AIState.SEARCH
-	_search_left = search_turns
-	var guess := last_known_pos + last_known_dir * overshoot
+	_search_left = maxi(search_turns, 1)
+	_alert_left = 0
+	_can_see = false
+
+	var origin := last_known_pos
+	if origin == Vector2.ZERO:
+		origin = global_position
+		last_known_pos = origin
+
+	var guess := origin + last_known_dir * overshoot
 	var n := nav()
+
 	if n and n.is_initialized() and not n.is_walkable_world(guess):
-		guess = last_known_pos
+		guess = origin
+
 	_search_pos = guess
 
 ## Одно действие. false = делать больше нечего (ход завершается).
@@ -121,41 +179,134 @@ func _take_action() -> bool:
 	match state:
 		AIState.AGGRO:
 			return await _act_aggro()
+
 		AIState.SEARCH:
-			return await _act_goto(_search_pos)
+			return await _act_search()
+
 		AIState.ALERT:
-			return await _act_goto(alert_pos)
+			return await _act_alert()
+
 		_:
 			return await _act_idle()
 
 func _act_aggro() -> bool:
-	var p := _get_player()
-	if p == null or not is_instance_valid(p) or not p.is_alive():
-		state = AIState.IDLE
+	if not _target_is_alive(target):
+		var player := _get_player()
+
+		if not _target_is_alive(player):
+			_enter_idle()
+			return false
+
+		target = player
+
+	var current_target := target
+	if current_target == null:
+		_enter_idle()
 		return false
 
 	if _can_see:
-		var pcell := world_to_cell(p.global_position)
+		last_known_pos = current_target.global_position
+		last_known_dir = current_target.facing \
+			if current_target is Character \
+			else Vector2.ZERO
 
-		if Character.chebyshev(grid_pos, pcell) <= attack_range_cells() \
-		and line_clear_to_cell(pcell):
-			if spend_attack():
-				attack_target(p)
-				return true
-			return false
+		var target_cell := world_to_cell(current_target.global_position)
+		var to_target := current_target.global_position - global_position
 
-		return await _step_towards(p.global_position)
+		if to_target.length_squared() > 1.0:
+			facing = to_target.normalized()
 
+		if Character.chebyshev(grid_pos, target_cell) <= attack_range_cells() \
+		and line_clear_to_cell(target_cell):
+			if not spend_attack():
+				return false
+
+			attack_target(current_target)
+			return true
+
+		return await _step_towards(current_target.global_position)
+
+	# Враг дошёл до последней известной позиции, но цель там не обнаружил.
+	# Вместо мгновенного успокоения начинает полноценный поиск.
 	if world_to_cell(last_known_pos) == grid_pos:
-		return false
+		_enter_search()
+		return await _act_search()
 
 	return await _step_towards(last_known_pos)
 
+
+func _act_search() -> bool:
+	if world_to_cell(_search_pos) != grid_pos:
+		return await _act_goto(_search_pos)
+
+	# Дошли до предполагаемой позиции цели — осматриваем соседние клетки,
+	# а не мгновенно переходим в Idle.
+	if not _pick_search_destination():
+		return false
+
+	return await _act_goto(_search_pos)
+
+
+func _act_alert() -> bool:
+	if world_to_cell(alert_pos) != grid_pos:
+		return await _act_goto(alert_pos)
+
+	# В точке тревоги враг не успокаивается, а начинает искать нарушителя.
+	last_known_pos = alert_pos
+	last_known_dir = Vector2.ZERO
+	_enter_search()
+
+	return await _act_search()
+
+
 func _act_goto(pos: Vector2) -> bool:
 	if world_to_cell(pos) == grid_pos:
-		state = AIState.IDLE   # дошли
 		return false
+
 	return await _step_towards(pos)
+
+func _pick_search_destination() -> bool:
+	var dirs: Array[Vector2i] = [
+		Vector2i(1, 0),
+		Vector2i(-1, 0),
+		Vector2i(0, 1),
+		Vector2i(0, -1),
+		Vector2i(1, 1),
+		Vector2i(-1, 1),
+		Vector2i(1, -1),
+		Vector2i(-1, -1),
+	]
+	dirs.shuffle()
+
+	var center_cell := world_to_cell(last_known_pos)
+	var cell_width := maxf(cell_size_px().x, 1.0)
+	var search_radius_cells := maxi(ceili(overshoot / cell_width), 2)
+
+	for dir in dirs:
+		var candidate := grid_pos + dir
+
+		if Character.chebyshev(center_cell, candidate) > search_radius_cells:
+			continue
+
+		if not is_cell_free(candidate):
+			continue
+
+		if action_points < move_cost_to(candidate):
+			continue
+
+		_search_pos = cell_to_world(candidate)
+		return true
+
+	return false
+
+func _target_is_alive(candidate: Node2D) -> bool:
+	if candidate == null or not is_instance_valid(candidate):
+		return false
+
+	if candidate.has_method("is_alive"):
+		return candidate.is_alive()
+
+	return true
 
 func _act_idle() -> bool:
 	if randf() >= wander_chance:
@@ -191,29 +342,57 @@ func _step_towards(world_pos: Vector2) -> bool:
 ## ═══════════ ВОСПРИЯТИЕ ═══════════
 
 func _perceive() -> void:
-	var p := _get_player()
-	_can_see = _check_vision(p)
-	if _can_see:
-		target = p
-		last_known_pos = p.global_position
-		# игрок тоже смотрит туда, куда ходил — используем это как направление
-		last_known_dir = p.facing if p is Character else Vector2.ZERO
-		state = AIState.AGGRO
-		_memory = memory_turns
+	var candidate := target
+
+	if not _target_is_alive(candidate):
+		candidate = _get_player()
+
+	if not _target_is_alive(candidate):
+		_can_see = false
+		return
+
+	_can_see = _check_vision(candidate)
+
+	if not _can_see:
+		return
+
+	var direction = candidate.facing \
+		if candidate is Character \
+		else Vector2.ZERO
+
+	_enter_aggro(
+		candidate,
+		candidate.global_position,
+		direction
+	)
+
+func effective_vision_angle_deg() -> float:
+	# Во время активного боя враг контролирует всё окружение.
+	# Заход за спину больше не сбрасывает агрессию и видимость цели.
+	if state == AIState.AGGRO:
+		return 360.0
+
+	return vision_angle_deg
 
 func can_see_target() -> bool:
 	return _can_see
 
-func _check_vision(p: Node2D) -> bool:
-	if p == null or not is_instance_valid(p):
+func _check_vision(candidate: Node2D) -> bool:
+	if not _target_is_alive(candidate):
 		return false
-	var to := p.global_position - global_position
-	if to.length_squared() > vision_range * vision_range:
+
+	var to_target := candidate.global_position - global_position
+
+	if to_target.length_squared() > vision_range * vision_range:
 		return false
-	if vision_angle_deg < 360.0 and to.length_squared() > 1.0:
-		if absf(facing.angle_to(to)) > deg_to_rad(vision_angle_deg * 0.5):
+
+	var angle := effective_vision_angle_deg()
+
+	if angle < 360.0 and to_target.length_squared() > 1.0:
+		if absf(facing.angle_to(to_target)) > deg_to_rad(angle * 0.5):
 			return false
-	return line_clear_to_cell(world_to_cell(p.global_position))
+
+	return line_clear_to_cell(world_to_cell(candidate.global_position))
 
 func _get_player() -> Node2D:
 	if _player == null or not is_instance_valid(_player):
@@ -225,27 +404,67 @@ func _get_player() -> Node2D:
 func take_damage(damage, attacker: Node2D = null) -> float:
 	var dealt := super(damage, attacker)
 	damaged.emit(attacker)
-	# Нас ударили — мы знаем, откуда.
+
+	# Реакция происходит даже при полном поглощении урона бронёй:
+	# сам факт направленной атаки считается обнаружением угрозы.
 	if attacker and is_instance_valid(attacker):
-		target = attacker
-		last_known_pos = attacker.global_position
-		last_known_dir = Vector2.ZERO
-		state = AIState.AGGRO
-		_memory = memory_turns
-	# Оповещаем сородичей в радиусе.
-	for e in get_tree().get_nodes_in_group("enemies"):
-		if e == self or not (e is Enemy): continue
-		if global_position.distance_squared_to(e.global_position) \
+		var attacker_dir = attacker.facing \
+			if attacker is Character \
+			else Vector2.ZERO
+
+		_enter_aggro(
+			attacker,
+			attacker.global_position,
+			attacker_dir
+		)
+
+		# _enter_aggro сначала включает круговой боевой обзор,
+		# поэтому атакующий корректно обнаруживается и за спиной.
+		_can_see = _check_vision(attacker)
+
+	# Оповещаем ближайших союзников даже при смертельном ударе.
+	for node in get_tree().get_nodes_in_group("enemies"):
+		if node == self or not (node is Enemy):
+			continue
+
+		var ally := node as Enemy
+
+		if global_position.distance_squared_to(ally.global_position) \
 		<= alert_broadcast_radius * alert_broadcast_radius:
-			(e as Enemy).notify_ally_attacked(self, attacker)
+			ally.notify_ally_attacked(self, attacker)
+
 	return dealt
 
-func notify_ally_attacked(victim: Node2D, _attacker: Node2D) -> void:
-	if state != AIState.IDLE:
+func notify_ally_attacked(victim: Node2D, attacker: Node2D) -> void:
+	if state == AIState.AGGRO:
 		return
+
+	# Если союзник лично видит атакующего, он сразу вступает в бой.
+	if _target_is_alive(attacker) and _check_vision(attacker):
+		var attacker_dir = attacker.facing \
+			if attacker is Character \
+			else Vector2.ZERO
+
+		_can_see = true
+		_enter_aggro(
+			attacker,
+			attacker.global_position,
+			attacker_dir
+		)
+		return
+
+	# Иначе идёт к месту нападения и затем начинает поиск.
+	if victim == null or not is_instance_valid(victim):
+		return
+
 	state = AIState.ALERT
+	target = attacker if _target_is_alive(attacker) else null
 	alert_pos = victim.global_position
-	_alert_left = alert_turns
+	last_known_pos = alert_pos
+	last_known_dir = Vector2.ZERO
+	_alert_left = maxi(alert_turns, 1)
+	_search_left = 0
+	_can_see = false
 
 ## ═══════════ ДЕБАГ ═══════════
 
