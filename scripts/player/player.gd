@@ -20,6 +20,8 @@ const KB_FIRST_STEP_DELAY := 0.06
 @export var ST_UI : CustomProgressBar
 @export var equipment : PlayerEquipment
 @export var attack_node : PlayerAttack
+@export var debug_add_item : DebugAddItems
+@export var Camera : PlayerCamera
 
 @export var debug_draw : bool = false:
 	set(value):
@@ -57,6 +59,15 @@ func _ready() -> void:
 	add_child(_path_preview)
 	_update_debug_draw()
 	set_UI()
+
+	## настройка камеры
+	var world = get_tree().current_scene
+	if world == Player:
+		return
+
+	var world_builder : WorldBuilder = world.WorldGen
+	Camera.CameraLimit = Vector2i(world_builder.WorldSize * world_builder.ChunkSize * world_builder.TileSize)
+
 
 func _on_died(_attacker: Node2D) -> void:
 	_planned_path = PackedVector2Array()
@@ -113,24 +124,33 @@ func get_planned_path() -> PackedVector2Array:
 
 func _process(delta: float) -> void:
 	update_UI()
-	if Engine.is_editor_hint(): return
-	if not _turn_active or _busy or is_moving(): return
 
-	# ОД закончились — ход завершается сам.
+	if Engine.is_editor_hint():
+		return
+
+	# Режим размещения предметов обрабатывается отдельно от хода
+	# и полностью блокирует движение игрока.
+	if debug_add_item and debug_add_item.visible:
+		_kb_hold = 0.0
+		return
+
+	if not _turn_active or _busy or is_moving():
+		return
+
 	if action_points <= 0:
 		_finish_turn()
 		return
 
-	# FIX: движение по УДЕРЖАНИЮ клавиш (раньше — только just_pressed,
-	# приходилось жать заново на каждый шаг). Троттлинг даёт анимация шага.
 	var dir := _dir_input()
 	if dir == Vector2i.ZERO:
 		_kb_hold = 0.0
 		return
+
 	_kb_hold += delta
 	if _kb_hold < KB_FIRST_STEP_DELAY:
-		return   # маленький грейс, чтобы поймать диагональ
-	step(dir)   # facing = направление шага; ОД тратит step()
+		return
+
+	step(dir)
 
 func _finish_turn() -> void:
 	if _turn_active:
@@ -146,30 +166,59 @@ func _dir_input() -> Vector2i:
 	return d
 
 func _unhandled_input(event: InputEvent) -> void:
-	if Engine.is_editor_hint(): return
+	if Engine.is_editor_hint():
+		return
 
-	# F3 — общий дебаг
+	# F3 — включение дебага и отдельного режима размещения предметов.
 	if event is InputEventKey and event.pressed and not event.echo \
 	and event.keycode == KEY_F3:
 		debug_draw = not debug_draw
+
 		for e in get_tree().get_nodes_in_group("enemies"):
 			if e is Enemy:
 				e.debug_draw = debug_draw
+
+		if debug_add_item:
+			if debug_add_item.visible:
+				debug_add_item.hide()
+			else:
+				debug_add_item.popup_centered(Vector2i(376, 376))
+
 		get_viewport().set_input_as_handled()
+		return
+
+	# Пока окно DebugAddItems открыто, клики по карте не передаются
+	# движению, атаке или взаимодействию игрока.
+	if debug_add_item and debug_add_item.visible:
+		if event is InputEventMouseButton and event.pressed:
+			match event.button_index:
+				MOUSE_BUTTON_LEFT:
+					debug_add_item.spawn_selected_at(
+						get_global_mouse_position(),
+						get_tree().current_scene
+					)
+				MOUSE_BUTTON_RIGHT:
+					debug_add_item.clear_selection()
+
+			get_viewport().set_input_as_handled()
+
 		return
 
 	if not _turn_active or _busy or is_moving():
 		return
 
-	# Space/Enter — закончить ход
 	if event is InputEventKey and event.pressed and not event.echo:
-		var key : Key = event.physical_keycode if event.physical_keycode != KEY_NONE else event.keycode
+		var key: Key = (
+			event.physical_keycode
+			if event.physical_keycode != KEY_NONE
+			else event.keycode
+		)
+
 		if key == KEY_SPACE or key == KEY_ENTER:
 			_finish_turn()
 			get_viewport().set_input_as_handled()
 			return
 
-	# ЛКМ — умный клик по клетке
 	if event is InputEventMouseButton and event.pressed \
 	and event.button_index == MOUSE_BUTTON_LEFT:
 		_handle_click(get_global_mouse_position())
@@ -219,26 +268,52 @@ func _interactable_at(cell: Vector2i) -> Node2D:
 			return n
 	return null
 
+func attack_speed_bonus_percent() -> float:
+	if equipment:
+		return equipment.attack_speed_bonus()
+	return super()
+
+func attack_stamina_cost_modifier() -> float:
+	if equipment:
+		return equipment.stamina_cost_modifier()
+
+	return super()
+
+
+func attack_mana_cost_modifier() -> float:
+	if equipment:
+		return equipment.mana_cost_modifier()
+
+	return super()
+
 ## Атаковать цель; если далеко — идти к ней, пока хватает ОД. Одна атака за клик.
 func _attack_or_approach(t: Node2D) -> void:
 	var guard := 64
+
 	while _turn_active and is_alive() and action_points > 0 and guard > 0:
 		guard -= 1
-		if t == null or not is_instance_valid(t): return
-		if t.has_method("is_alive") and not t.is_alive(): return
+
+		if t == null or not is_instance_valid(t):
+			return
+		if t.has_method("is_alive") and not t.is_alive():
+			return
 
 		var tcell := world_to_cell(t.global_position)
-		if chebyshev(grid_pos, tcell) <= attack_range_cells() and line_clear_to_cell(tcell):
-			if not can_act(&"attack"):
-				return   # на удар (attack_speed ОД) не хватает
+
+		if chebyshev(grid_pos, tcell) <= attack_range_cells() \
+		and line_clear_to_cell(tcell):
+			if not can_attack():
+				return
+
 			if attack_node:
 				attack_node.attack(t)
-			elif spend(&"attack"):
+			elif spend_attack():
 				attack_target(t)
-			return   # одна атака за клик — дальше решает игрок
+
+			return
 
 		if not await _step_towards_world(t.global_position):
-			return   # пройти нельзя / не хватило ОД
+			return
 
 ## Открыть объект, стоя ВПЛОТНУЮ (соседняя клетка, вкл. диагональ);
 ## если далеко — подойти и открыть.

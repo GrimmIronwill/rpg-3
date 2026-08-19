@@ -104,6 +104,14 @@ func get_all_variables(debug : bool = true) -> Array[String]:
 
 	return arr
 
+func get_all_variables_text(debug : bool = false) -> String:
+	var str = ""
+	var vars = get_all_variables(debug)
+
+	for i in vars:
+		str += i + "\n"
+
+	return str
 
 func print_all_variables() -> void:
 	for prop in get_property_list():

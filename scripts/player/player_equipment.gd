@@ -219,3 +219,26 @@ func attack_speed_bonus() -> float:
 	for s in slots:
 		b += (slots[s] as ItemEquipment).bonus_attack_speed
 	return b
+
+func stamina_cost_modifier() -> float:
+	var modifier := 0.0
+
+	for slot_id in slots:
+		var item := slots[slot_id] as ItemEquipment
+
+		if item:
+			modifier += item.stamina_cost_modifier
+
+	return modifier
+
+
+func mana_cost_modifier() -> float:
+	var modifier := 0.0
+
+	for slot_id in slots:
+		var item := slots[slot_id] as ItemEquipment
+
+		if item:
+			modifier += item.mana_cost_modifier
+
+	return modifier

@@ -34,10 +34,15 @@ func aim_dir() -> Vector2:
 
 ## Атаковать конкретную цель. Тратит ОД. Проверки дистанции/линии — на вызывающем.
 func attack(t: Node2D) -> bool:
-	if player == null or not player.is_alive(): return false
-	if t == null or not is_instance_valid(t): return false
-	if not t.has_method("take_damage"): return false
-	if not player.spend(&"attack"): return false
+	if player == null or not player.is_alive():
+		return false
+	if t == null or not is_instance_valid(t):
+		return false
+	if not t.has_method("take_damage"):
+		return false
+	if not player.spend_attack():
+		return false
+
 	last_attack_flash = 0.25
 	t.take_damage(_damage_table(), player)
 	return true

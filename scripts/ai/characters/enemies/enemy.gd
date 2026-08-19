@@ -136,18 +136,19 @@ func _act_aggro() -> bool:
 
 	if _can_see:
 		var pcell := world_to_cell(p.global_position)
-		# В радиусе атаки и линия свободна -> бьём.
+
 		if Character.chebyshev(grid_pos, pcell) <= attack_range_cells() \
 		and line_clear_to_cell(pcell):
-			if spend(&"attack"):
+			if spend_attack():
 				attack_target(p)
 				return true
-			return false   # на удар не хватило ОД
+			return false
+
 		return await _step_towards(p.global_position)
 
-	# Цель не видна: идём к последней известной точке.
 	if world_to_cell(last_known_pos) == grid_pos:
-		return false   # стоим, память тикает по ходам
+		return false
+
 	return await _step_towards(last_known_pos)
 
 func _act_goto(pos: Vector2) -> bool:

@@ -106,3 +106,10 @@ Player [CharacterBody2D]
             |- HBoxContainer [HBoxContainer]
               |- Mana [ProgressBar]
               |- Stamina [ProgressBar]
+      |- DebugAddItems [Window]
+        |- MarginContainer [MarginContainer]
+          |- ScrollContainer [ScrollContainer]
+            |- VBoxContainer [VBoxContainer]
+
+  Signals:
+    > CanvasLayer/Control/DebugAddItems.close_requested -> CanvasLayer/Control/DebugAddItems._on_close_requested

@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://debqmkidrrehy" path="res://scripts/world/biomes/biome_forest.gd" id="3_okwrk"]
 [ext_resource type="Texture2D" uid="uid://dvpybj3sryi18" path="res://sprites/tilesets/TilesetDebug.png" id="4_fidxf"]
 [ext_resource type="Script" uid="uid://choxeey12y8xe" path="res://scripts/world/biomes/biome_generator.gd" id="4_mf6ly"]
-[ext_resource type="Script" uid="uid://8v01qac3mdv" path="res://addons/camera/MapCamera2D.gd" id="5_mf6ly"]
 [ext_resource type="PackedScene" uid="uid://xdum7b6fyudn" path="res://scenes/player/player.tscn" id="7_3hstr"]
 [ext_resource type="Script" uid="uid://eugl6wijid0x" path="res://scripts/world/chest.gd" id="8_epem1"]
 [ext_resource type="Texture2D" uid="uid://bg5uyk6npe5u0" path="res://sprites/characters/debug.png" id="9_dxx6j"]
@@ -58,9 +57,6 @@ metadata/_custom_type_script = "uid://rrp11n518b6t"
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=416299819]
 tile_set = SubResource("TileSet_okwrk")
-
-[node name="MapCamera2D" type="Camera2D" parent="." unique_id=109238995]
-script = ExtResource("5_mf6ly")
 
 [node name="CharacterHolder" type="Node" parent="." unique_id=839813928]
 

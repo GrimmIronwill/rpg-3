@@ -117,7 +117,38 @@ func start_turn() -> void:
 func end_turn() -> void:
 	action_points = 0
 	action_points_changed.emit(action_points, ACTIONS_PER_TURN)
+
+	if is_alive():
+		_apply_turn_regeneration()
+
 	turn_finished.emit()
+
+func _apply_turn_regeneration() -> void:
+	if Stats == null:
+		return
+
+	var health_amount := maxf(
+		Stats.health_regen.x + max_health() * Stats.health_regen.y / 100.0,
+		0.0
+	)
+	if health_amount > 0.0 and Stats.health.x < max_health():
+		heal(health_amount)
+
+	var stamina_max := maxf(Stats.stamina.y, 0.0)
+	var stamina_amount := maxf(
+		Stats.stamina_regen.x + stamina_max * Stats.stamina_regen.y / 100.0,
+		0.0
+	)
+	if stamina_amount > 0.0 and Stats.stamina.x < stamina_max:
+		Stats.stamina.x = minf(Stats.stamina.x + stamina_amount, stamina_max)
+
+	var mana_max := maxf(Stats.mana.y, 0.0)
+	var mana_amount := maxf(
+		Stats.mana_regen.x + mana_max * Stats.mana_regen.y / 100.0,
+		0.0
+	)
+	if mana_amount > 0.0 and Stats.mana.x < mana_max:
+		Stats.mana.x = minf(Stats.mana.x + mana_amount, mana_max)
 
 ## Переопределяется наследниками (Player ждёт ввод, Enemy думает сам).
 func take_turn() -> void:
@@ -129,10 +160,89 @@ func take_turn() -> void:
 ## Атака: attack_speed оружия (ИНТ, = сколько ОД жрёт удар), иначе базовая.
 func action_cost(action: StringName) -> int:
 	if action == &"attack":
+		var base_cost := int(ACTION_COST.get(&"attack", 1))
 		var w := current_weapon()
+
 		if w and w.attack_speed > 0:
-			return w.attack_speed
+			base_cost = w.attack_speed
+
+		var speed_multiplier := maxf(
+			1.0 - attack_speed_bonus_percent() / 100.0,
+			0.0
+		)
+		return maxi(ceili(float(base_cost) * speed_multiplier), 1)
+
 	return int(ACTION_COST.get(action, 1))
+
+func attack_speed_bonus_percent() -> float:
+	var w := current_weapon()
+	return w.bonus_attack_speed if w else 0.0
+
+func attack_stamina_cost_modifier() -> float:
+	return 0.0
+
+
+func attack_mana_cost_modifier() -> float:
+	return 0.0
+
+
+func attack_stamina_cost() -> float:
+	var weapon := current_weapon()
+
+	if weapon == null:
+		return 0.0
+
+	return maxf(
+		weapon.stamina_cost + attack_stamina_cost_modifier(),
+		0.0
+	)
+
+
+func attack_mana_cost() -> float:
+	var weapon := current_weapon()
+
+	if weapon == null:
+		return 0.0
+
+	return maxf(
+		weapon.mana_cost + attack_mana_cost_modifier(),
+		0.0
+	)
+
+func can_attack() -> bool:
+	if not can_act(&"attack"):
+		return false
+
+	if Stats == null:
+		return true
+
+	if Stats.stamina.x < attack_stamina_cost():
+		return false
+
+	if Stats.mana.x < attack_mana_cost():
+		return false
+
+	return true
+
+func spend_attack() -> bool:
+	if not can_attack():
+		return false
+
+	if not spend(&"attack"):
+		return false
+
+	if Stats:
+		Stats.stamina.x = maxf(
+			Stats.stamina.x - attack_stamina_cost(),
+			0.0
+		)
+
+		Stats.mana.x = maxf(
+			Stats.mana.x - attack_mana_cost(),
+			0.0
+		)
+
+	return true
 
 func can_act(action: StringName) -> bool:
 	return action_points >= action_cost(action)

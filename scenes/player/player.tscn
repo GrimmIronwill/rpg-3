@@ -11,6 +11,8 @@
 [ext_resource type="Script" uid="uid://cboo6er1vm7s" path="res://scripts/player/player_interaction.gd" id="6_5gtgg"]
 [ext_resource type="Script" uid="uid://b54tp5j3ue14" path="res://scripts/ui/inventory/equipment_slot_ui.gd" id="8_qek5x"]
 [ext_resource type="Script" uid="uid://bvjshogjc7a74" path="res://scripts/ui/custom_buttons/custom_progress_bar.gd" id="11_je7p5"]
+[ext_resource type="Script" uid="uid://bu8r3im6xl4dy" path="res://scripts/player/player_debug_add_items.gd" id="12_fm80t"]
+[ext_resource type="Script" uid="uid://bl6cssygfv5jq" path="res://scripts/player/player_camera.gd" id="13_gx1jg"]
 
 [sub_resource type="Resource" id="Resource_5gtgg"]
 script = ExtResource("2_h17s1")
@@ -25,7 +27,7 @@ metadata/_custom_type_script = "uid://bh2mged47vv0b"
 [sub_resource type="CircleShape2D" id="CircleShape2D_lvxji"]
 radius = 16.0
 
-[node name="Player" type="CharacterBody2D" unique_id=2004850523 node_paths=PackedStringArray("AP_UI", "HP_UI", "MP_UI", "ST_UI", "equipment", "attack_node") groups=["player"]]
+[node name="Player" type="CharacterBody2D" unique_id=2004850523 node_paths=PackedStringArray("AP_UI", "HP_UI", "MP_UI", "ST_UI", "equipment", "attack_node", "debug_add_item", "Camera") groups=["player"]]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_8afob")
@@ -35,6 +37,8 @@ MP_UI = NodePath("CanvasLayer/Control/Stats/MarginContainer/VBoxContainer/HBoxCo
 ST_UI = NodePath("CanvasLayer/Control/Stats/MarginContainer/VBoxContainer/HBoxContainer/Stamina")
 equipment = NodePath("PlayerEquipment")
 attack_node = NodePath("PlayerAttack")
+debug_add_item = NodePath("CanvasLayer/Control/DebugAddItems")
+Camera = NodePath("Camera2D")
 Stats = SubResource("Resource_5gtgg")
 metadata/_custom_type_script = "uid://ctqskgr156tuo"
 
@@ -424,3 +428,39 @@ value = 100.0
 show_percentage = false
 script = ExtResource("11_je7p5")
 metadata/_custom_type_script = "uid://bvjshogjc7a74"
+
+[node name="DebugAddItems" type="Window" parent="CanvasLayer/Control" unique_id=5237685 node_paths=PackedStringArray("ScrollVBox")]
+oversampling_override = 1.0
+initial_position = 4
+size = Vector2i(376, 376)
+visible = false
+popup_window = true
+keep_title_visible = true
+script = ExtResource("12_fm80t")
+ScrollVBox = NodePath("MarginContainer/ScrollContainer/VBoxContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/DebugAddItems" unique_id=430481527]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control/DebugAddItems/MarginContainer" unique_id=239384538]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/DebugAddItems/MarginContainer/ScrollContainer" unique_id=1753578686]
+layout_mode = 2
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=550455667]
+zoom = Vector2(2, 2)
+script = ExtResource("13_gx1jg")
+CameraSize = Vector2(960, 540)
+CameraLimit = Vector2i(1920, 1080)
+PeekMaxDistance = 320.0
+
+[connection signal="close_requested" from="CanvasLayer/Control/DebugAddItems" to="CanvasLayer/Control/DebugAddItems" method="_on_close_requested"]
